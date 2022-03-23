@@ -35,27 +35,29 @@ class Room {
 
 	String getExit(char dir) {
 		switch (dir) {
-		case 'N': return this.N;
-		case 'S': return this.S;
-		case 'W': return this.W;
-		case 'E': return this.E;
-		default: return "";
+		case 'N':
+			return this.N;
+		case 'S':
+			return this.S;
+		case 'W':
+			return this.W;
+		case 'E':
+			return this.E;
+		default:
+			return "";
 		}
 	}
 
 	static void setupRooms(HashMap<String, Room> roomList) {
-		Room r = new Room("Forest Clearing",
-				"There is a lovely peaceful clearing here\n"
-				+ "A path leads north and it looks like you can go through"
-				+ "the forest to the west");
-					//N  S  E  W 
-		r.setExits("forest1", "path1","","");
+		Room r = new Room("Forest Clearing", "There is a lovely peaceful clearing here\n"
+				+ "A path leads north and it looks like you can go through" + "the forest to the west");
+		// N S E W
+		r.setExits("forest1", "path1", "", "");
 		roomList.put("clearing", r);
-		
+
 		r = new Room("Tunnel",
-				"A slippery tunnel connecting parts of the cave system\n"
-				+ "At the south is a massive iron door");
-		r.setExits("", "cave", "tunnel2","");
-		roomList.put("tunnel1", r);		
+				"A slippery tunnel connecting parts of the cave system\n" + "At the south is a massive iron door");
+		r.setExits("", "cave", "tunnel2", "");
+		roomList.put("tunnel1", r);
 	}
 }
