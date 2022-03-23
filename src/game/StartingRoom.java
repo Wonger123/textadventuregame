@@ -43,7 +43,7 @@ class Room {
 		}
 	}
 
-	static void setupRooms(HashMap<string, room=" "> roomList) {
+	static void setupRooms(HashMap<String, Room> roomList) {
 		Room r = new Room("Forest Clearing",
 				"There is a lovely peaceful clearing here\n"
 				+ "A path leads north and it looks like you can go through"
