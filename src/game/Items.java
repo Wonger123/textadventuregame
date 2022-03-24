@@ -3,6 +3,7 @@ package game;
 import java.util.HashMap;
 
 class Item {
+	
 	 String itemName; //unique key
 	 String itemDescription; //describe the item when you look at it
 	 boolean itemIsCarryable = true;
