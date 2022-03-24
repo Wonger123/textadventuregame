@@ -50,7 +50,7 @@ class Room {
 				+ "Placeholder South"
 				+ "Placeholder West"
 				+ "Placeholder Up");
-		r.setExits("forest2", "desert","mountains", "lake", "trees", "");
+		r.setExits("forest2", "desert","mountains", "clearing", "trees", "");
 		roomList.put("forest1", r);
 		
 		r = new Room("Structure in Trees",
@@ -90,7 +90,56 @@ class Room {
 				"Placeholder Description\n"
 				+ "Placeholder East"
 				+ "Placeholder South");
-		r.setExits("", "forest2", "lake", "", "", "");
+		r.setExits("", "forest2", "clearing", "", "", "");
 		roomList.put("beach", r);
+
+		r = new Room("Forest Clearing",
+				"Placeholder Description\n"
+				+ "Placeholder North"
+				+ "Placeholder East"
+				+ "Placeholder South"
+				+ "Placeholder Down");
+		r.setExits("beach", "forest1", "mountains", "", "", "lake");
+		roomList.put("clearing", r);
+
+		r = new Room("Lake",
+				"Placeholder Description\n"
+				+ "Placeholder East"
+				+ "Placeholder Up");
+		r.setExits("", "cave1", "", "", "clearing", "");
+		roomList.put("lake", r);
+		
+		r = new Room("Cave",
+				"Placeholder Description\n"
+				+ "Placeholder West");
+		r.setExits("", "", "", "lake", "", "");
+		roomList.put("cave1", r);
+
+		r = new Room("Mountains",
+				"Placeholder Description\n"
+				+ "Placeholder North"
+				+ "Placeholder West"
+				+ "Placeholder Up");
+		r.setExits("forest1", "", "", "cave2", "peak", "");
+		roomList.put("mountains", r);
+
+		r = new Room("Mountain Peak",
+				"Placeholder Description\n"
+				+ "Placeholder Down");
+		r.setExits("", "", "", "", "", "mountains");
+		roomList.put("peak", r);
+
+		r = new Room("Cave",
+				"Placeholder Description\n"
+				+ "Placeholder East"
+				+ "Placeholder Down");
+		r.setExits("", "mountains", "", "", "", "secret");
+		roomList.put("cave2", r);
+
+		r = new Room("Secret Cave",
+				"Placeholder Description\n"
+				+ "Placeholder Up");
+		r.setExits("", "", "", "", "cave2", "");
+		roomList.put("secret", r);
 	}
 }
