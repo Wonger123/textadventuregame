@@ -8,39 +8,34 @@ public class TextAdventureGame {
 
 	public static void main(String[] args) {
 
-		boolean isPlaying = false;
 		String playerInput;
 
 		System.out.println("Hello! Welcome to this text adventure game!");
-		System.out.println("Made by Raymond \n");
+		// game description
+		System.out.println("Made by Raymond and Andrew");
+		System.out.println("Written by ");
 
-		System.out.print("Would you like to play? (Y/N) ");
-		playerInput = sc.next();
+		// ask if player wants to play
+		System.out.print("Would you like to play? (Y/N): ");
+		playerInput = sc.next().toUpperCase();
 		sc.nextLine();
 
-		while (!isPlaying) {
-			if (playerInput.equalsIgnoreCase("Y")) {
-				System.out.println("Welcome to The Game");
-				// the game
-			}
-			if (playerInput.equalsIgnoreCase("N")) { //fix this tmrw
-				System.out.print("Have a good day :)");
-				System.exit(0);
-			}
-			if (!playerInput.equalsIgnoreCase("Y") && !playerInput.equalsIgnoreCase("N")) {
-				System.out.print("Please input a valid answer (Y/N): ");
-				playerInput = sc.nextLine();
-			}
-
-			System.out.println("test");
-			playerInput = sc.next();
-			sc.nextLine();
-
-			if (playerInput.equalsIgnoreCase("Exit")) {
-				System.out.println("Thanks for playing");
-				System.out.println("Goodbye");
-				break;
-			}
+		// checks if player response is valid
+		while (!playerInput.equals("Y") && !playerInput.equals("N")) {
+			System.out.print("Please enter a valid response (Y/N): ");
+			playerInput = sc.next().toUpperCase();
 		}
+		
+		if (playerInput.equals("Y")) {
+			System.out.println("Welcome to The Game");
+			// the rest of the game goes here
+		}
+		if (playerInput.equals("N")) {
+			System.out.print("Have a good day :)");			
+		}
+	}
+
+	public void quit(String playerInput) {
+		// type "exit" at any point to quit the game
 	}
 }
