@@ -30,7 +30,7 @@ public class TextAdventureGame {
 		// the rest of the game goes here
 	}
 
-	static public String response(String playerInput) {
+	static public String response(String playerInput) { // takes player input, quits game if they input "exit"
 		playerInput = sc.next();
 		sc.nextLine();
 		
@@ -41,7 +41,7 @@ public class TextAdventureGame {
 		return playerInput;
 	}
 	
-	static public String YorN(String check) {
+	static public String YorN(String check) { // checks for invalid answer when starting the game
 		check = sc.next().toUpperCase();
 		sc.nextLine();
 
