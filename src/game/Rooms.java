@@ -7,7 +7,7 @@ class Room {
 	String displayName;
 	String description;
 	boolean isDark;
-	boolean isVisited;
+	//boolean isVisited;
 	String N, E, S, W, U, D;
 	ArrayList items = new ArrayList();
 
@@ -44,24 +44,24 @@ class Room {
 
 	static void setupRooms(HashMap<String, Room> roomList) {
 		Room r = new Room("Forest",
-				"You awake in a forest, the last thing that you remember was flying towards mars when you crashed into a rock and went off course. Now, lying in pieces near you, your ship is unusable. You notice some parts are missing as well. You think you should probably go find them instead of laying here until you die. \n"
+				"You awake in a forest, the last thing that you remember was flying towards Mars when you crashed into a rock and went off course. Now, lying in pieces near you, your ship is unusable. You notice some parts are missing as well. You think you should probably go find them instead of laying here until you die. \n"
 				+ "Heading north you come across a river heading West, as well as a mine through a clearing to the east.\n"
-				+ "Placeholder East"
-				+ "Placeholder South"
-				+ "Placeholder West"
-				+ "Placeholder Up");
-		r.setExits("forest2", "desert","mountains", "clearing", "trees", "");
+				+ "Desert on the East"
+				+ "Mountains in the South"
+				+ "Clearing towards the West"
+				+ "Structure in the Trees Going Up");
+		r.setExits("forest2", "desert", "mountains", "clearing", "trees", "");
 		roomList.put("forest1", r);
 		
 		r = new Room("Structure in Trees",
 				"Placeholder Description\n"
-				+ "Placeholder Down");
+				+ "Back to Forest Below");
 		r.setExits("", "", "", "", "", "forest1");
 		roomList.put("trees", r);
 
 		r = new Room("Desert",
-				"Placeholder Description\n"
-				+ "Placeholder West");
+				"You come across a desert, hot and dry. Nearby you see a pyramid.\n"
+				+ "Desert in the West");
 		r.setExits("", "", "", "Desert", "", "");
 		roomList.put("desert", r);
 
