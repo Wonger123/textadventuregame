@@ -8,7 +8,7 @@ public class TextAdventureGame {
 
 	public static void main(String[] args) {
 
-		String playerInput;
+		String input;
 
 		System.out.println("Hello! Welcome to this text adventure game!");
 		// game description
@@ -17,12 +17,12 @@ public class TextAdventureGame {
 
 		// ask if player wants to play
 		System.out.print("Would you like to play? (Y/N): ");
-		playerInput = YorN("Would you like to play? (Y/N): ");
+		input = YorN("Would you like to play? (Y/N): ");
 		
-		if (playerInput.equals("Y")) {
+		if (input.equals("Y")) {
 			System.out.println("Welcome to The Game");
 		}
-		if (playerInput.equals("N")) {
+		if (input.equals("N")) {
 			System.out.print("Have a good day :)");
 			System.exit(0);
 		}
@@ -30,19 +30,26 @@ public class TextAdventureGame {
 		// the rest of the game goes here
 	}
 
-	public void quit(String playerInput) {
-		// type "exit" at any point to quit the game
+	static public String response(String playerInput) {
+		playerInput = sc.next();
+		sc.nextLine();
+		
+		if (playerInput.equalsIgnoreCase("exit")) {
+			System.out.print("Thanks for playing :)");
+			System.exit(0);
+		}
+		return playerInput;
 	}
 	
-	static public String YorN(String playerInput) {
-		playerInput = sc.next().toUpperCase();
+	static public String YorN(String check) {
+		check = sc.next().toUpperCase();
 		sc.nextLine();
 
 		// checks if player response is valid
-		while (!playerInput.equals("Y") && !playerInput.equals("N")) {
+		while (!check.equals("Y") && !check.equals("N")) {
 			System.out.print("Please enter a valid response (Y/N): ");
-			playerInput = sc.next().toUpperCase();
+			check = sc.next().toUpperCase();
 		}
-		return playerInput;
+		return check;
 	}
 }
