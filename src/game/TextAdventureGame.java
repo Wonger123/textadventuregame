@@ -16,7 +16,6 @@ public class TextAdventureGame {
 		System.out.println("Written by ");
 
 		// ask if player wants to play
-		System.out.print("Would you like to play? (Y/N): ");
 		input = YorN("Would you like to play? (Y/N): ");
 		
 		if (input.equals("Y")) {
@@ -30,8 +29,8 @@ public class TextAdventureGame {
 		// the rest of the game goes here
 	}
 
-	static public String response(String playerInput) { // takes player input, quits game if they input "exit"
-		playerInput = sc.next();
+	static public String response() { // takes player input, quits game if they input "exit"
+		String playerInput = sc.next();
 		sc.nextLine();
 		
 		if (playerInput.equalsIgnoreCase("exit")) {
@@ -41,8 +40,9 @@ public class TextAdventureGame {
 		return playerInput;
 	}
 	
-	static public String YorN(String check) { // checks for invalid answer when starting the game
-		check = sc.next().toUpperCase();
+	static public String YorN(String msg) { // checks for invalid answer when starting the game
+		System.out.println(msg);
+		String check = sc.next().toUpperCase();
 		sc.nextLine();
 
 		// checks if player response is valid
