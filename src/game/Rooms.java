@@ -32,12 +32,12 @@ class Room {
 
 	String getExit(char dir) {
 		switch (dir) {
-		case 'N': return this.N;
-		case 'E': return this.E;
-		case 'S': return this.S;
-		case 'W': return this.W;
-		case 'U': return this.U;
-		case 'D': return this.D;
+		case 'n': return this.N;
+		case 'e': return this.E;
+		case 's': return this.S;
+		case 'w': return this.W;
+		case 'u': return this.U;
+		case 'd': return this.D;
 		default: return "";
 		}
 	}
@@ -62,7 +62,7 @@ class Room {
 		r = new Room("Desert",
 				"You come across a desert, hot and dry. Nearby you see a pyramid.\n"
 				+ "Desert in the West");
-		r.setExits("", "", "", "Desert", "", "");
+		r.setExits("", "", "", "forest1", "", "");
 		roomList.put("desert", r);
 
 		r = new Room("Forest",

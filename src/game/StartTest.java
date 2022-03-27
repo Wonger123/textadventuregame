@@ -19,6 +19,7 @@ public class StartTest {
         if (answer.toLowerCase().equals("y")) { //Initiates Game
             System.out.println("Let's start the game");
             boolean isPlaying = true;
+            
             while (isPlaying) {
                 System.out.print("Type something: "); //User is prompted to type
                 String thing = sc.next();
