@@ -48,7 +48,7 @@ class Room {
 				"Heading north you come across a river heading West, as well as a mine through a clearing to the east.\n"
 				+ "Desert on the East"
 				+ "Heading south you'll come across some mountains. You see a cave to the east, it is too dark to see inside"
-				+ "Clearing towards the West"
+				+ "Heading west you come across a clearing, surrounded by trees."
 				+ "Structure in the Trees Going Up");
 		r.setExits("forest2", "desert", "mountains", "clearing", "trees", "");
 		roomList.put("forest1", r);
@@ -98,7 +98,7 @@ class Room {
 				"Placeholder North"
 				+ "Placeholder East"
 				+ "Placeholder South"
-				+ "Placeholder Down");
+				+ "There is a lake that you cannot see to the bottom of down below");
 		r.setExits("beach", "forest1", "mountains", "", "", "lake");
 		roomList.put("clearing", r);
 
