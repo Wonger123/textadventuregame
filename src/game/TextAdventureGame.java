@@ -96,9 +96,10 @@ public class TextAdventureGame {
 
 		//separate out into word1, word2, etc.
 		String word1 = words[0];
+        String word2 = null;
         if (words.length > 1)
         {
-            String word2 = words[1];
+            word2 = words[1];
         }
 
 		/***** MAIN PROCESSING *****/
@@ -119,8 +120,8 @@ public class TextAdventureGame {
                 return true;
             }
 
-		case "n": case "s": case "w": case "e": case "u": case "d":
-		case "north": case "south": case "west": case "east": case "up": case "down":
+		case "n": case "e": case "s": case "w": case "u": case "d":
+		case "north": case "east": case "south": case "west": case "up": case "down":
 			movingRooms(word1.charAt(0));
 			break;
 
@@ -140,7 +141,12 @@ public class TextAdventureGame {
 			break;
 		case "eat":
 			eatItem(word2);
-			break;*/		
+			break;*/
+            
+        case "go": case "move":
+            movingRooms(word2.charAt(0));
+            break;
+
 			
 		/**** SPECIAL COMMANDS ****/
 		// ...		
@@ -148,6 +154,7 @@ public class TextAdventureGame {
 		default: 
 			System.out.println("Sorry, I don't understand that command");
 		}
+        System.out.println();
 		return true;
 	}
 
