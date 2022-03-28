@@ -30,7 +30,7 @@ public class TextAdventureGame {
         //Intro
 		System.out.println("Hello! Welcome to this text adventure game!");
 		System.out.println("Made by Raymond and Andrew");
-		System.out.println("Written by ");
+		System.out.println("Written by Ethan");
 
 		String input = YorN("Would you like to play? (Y/N): ");
 		if (input.equals("Y")) {
