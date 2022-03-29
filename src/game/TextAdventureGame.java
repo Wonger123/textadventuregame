@@ -81,9 +81,8 @@ public class TextAdventureGame {
 		
 		//P2. word replacement
 		text = text.replaceAll(" into ", " in ");
-		text = text.replaceAll(" rocks", " rock");
 		text = text.replaceAll("pick up", "pickup");
-		text = text.replaceAll("look at", "lookat");
+		text = text.replaceAll("look around", "look");
 		text = text.replaceAll("climb up", "up");
 		
 		String words[] = text.split(" ");
@@ -128,28 +127,20 @@ public class TextAdventureGame {
 		/*case "i": case "inventory":
 			showInventory();
 			break;
-		case "sleep":
-			sleep();			
-			break;	
 		case "help":
 			printHelp();
-			break; */
+			break; 
+		case "pickup":
+		case "swim":
+		case "break": case "mine":
+		case "look":
+		case "fix":
+		case "takeoff"*/
 			
-		/**** two word commands ****/		
-		/*case "read":
-			readObject(word2);
-			break;
-		case "eat":
-			eatItem(word2);
-			break;*/
-            
+		/**** two word commands ****/		            
         case "go": case "move":
             movingRooms(word2.charAt(0));
             break;
-
-			
-		/**** SPECIAL COMMANDS ****/
-		// ...		
 
 		default: 
 			System.out.println("Sorry, I don't understand that command");
@@ -169,6 +160,6 @@ public class TextAdventureGame {
         {
             currentRoom = roomList.get(currentRoom).getExit(direction);
         }
-        System.out.println("You are currently in " + roomList.get(currentRoom).displayName);
+        System.out.println(roomList.get(currentRoom).displayName + "\n" + roomList.get(currentRoom).description);
     }
 }
