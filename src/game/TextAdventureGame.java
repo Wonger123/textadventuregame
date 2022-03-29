@@ -20,7 +20,7 @@ public class TextAdventureGame {
             playing = parseCommand(command);
         }
 	}
-
+	
     static void setup()
     {
         //Object, Map and Variable Initialization
@@ -31,7 +31,7 @@ public class TextAdventureGame {
 		System.out.println("Hello! Welcome to this text adventure game!");
 		System.out.println("Made by Raymond and Andrew");
 		System.out.println("Written by Ethan");
-
+		
 		String input = YorN("Would you like to play? (Y/N): ");
 		if (input.equals("Y")) {
 			System.out.println("Game Commencing...");
