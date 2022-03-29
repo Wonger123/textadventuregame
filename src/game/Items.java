@@ -29,7 +29,7 @@ class Items {
 
 		 z = new Items("Miner's Helmet", "A hard hat with a light on it.", true, false);
 		 itemList.put("helmet", z);
-		 //roomList.get("").items.add("shovel");
+		 roomList.get("lmine").items.add("helmet");
 
 		 z = new Items("Scuba Gear", "A wetsuit, and an oxygen tank for diving underwater.", true, false);
 		 itemList.put("scuba", z);
@@ -45,7 +45,7 @@ class Items {
 
 		 z = new Items("Rocket Engine", "The engine of the rocket.", true, false);
 		 itemList.put("engine", z);
-		 //roomList.get("mountains").items.add("shovel");
+		 roomList.get("lmine").items.add("engine");
 
 		 z = new Items("Rocket Right Wing", "The right wing of the rocket.", true, false);
 		 itemList.put("rightwing", z);
