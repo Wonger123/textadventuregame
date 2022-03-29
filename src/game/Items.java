@@ -19,9 +19,9 @@ class Items {
 	 
 	 //create items
 	 static void setupItems(HashMap<String, Items> itemList, HashMap<String, Room> roomList) {
-		 Items z = new Items ("Shovel", "A trusty shovel, good for digging things up.", true, false);
-		 itemList.put("shovel", z);
-		 roomList.get("mountains").items.add("shovel");
+		 Items z = new Items ("Shovel", "A trusty shovel, good for digging things up.", true, false); // creates item
+		 itemList.put("shovel", z); // puts item in item hashmap
+		 roomList.get("mountains").items.add("shovel"); // adds item to room
 
 		 z = new Items("Pickaxe", "A sturdy pickaxe, good for breaking rock.", true, false);
 		 itemList.put("pickaxe", z);
