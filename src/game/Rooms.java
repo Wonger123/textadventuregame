@@ -6,6 +6,7 @@ class Room {
 	// String name;
 	String displayName;
 	String description;
+	String directions;
 	boolean isDark;
 	//boolean isVisited;
 	String N, E, S, W, U, D;
@@ -15,6 +16,7 @@ class Room {
 	Room(String displayName, String description, String directions) {
 		this.displayName = displayName;
 		this.description = description;
+		this.directions = directions;
 	}
 
 	void setExits(String N, String E, String S, String W, String U, String D) {
@@ -45,100 +47,107 @@ class Room {
 	static void setupRooms(HashMap<String, Room> roomList) {
 		Room r = new Room("Forest",
 				"This small clearing in the trees houses your rocket. In each direction there are dirt pathways.",
-				"Heading north you come across a river heading West, as well as a mine through a clearing to the east.\n"
-				+ "Desert on the East"
-				+ "Heading south you'll come across some mountains. You see a cave to the east, it is too dark to see inside"
+				"Heading north you'll reach another part of this forest\n"
+				+ "You travel east finding a desert."
+				+ "Heading south you'll come across some mountains."
 				+ "Heading west you come across a clearing, surrounded by trees."
-				+ "Structure in the Trees Going Up");
+				+ "You climb up into the trees and find a structure.");
 		r.setExits("forest2", "desert", "mountains", "clearing", "trees", "");
 		roomList.put("forest1", r);
 		
 		r = new Room("Structure in Trees",
-				"Placeholder Description",
-				"Back to Forest Below");
+				"Sitting in the trees you find a building resembling a treehouse. It is empty",
+				"You can head back down to the forest below.");
 		r.setExits("", "", "", "", "", "forest1");
 		roomList.put("trees", r);
 
 		r = new Room("Desert",
 				"You come across a desert, hot and dry. Nearby you see a pyramid.",
-				"Desert in the West");
+				"Heading west you enter the forest, back to the clearing where your ship resides. ");
 		r.setExits("", "", "", "forest1", "", "");
 		roomList.put("desert", r);
 
 		r = new Room("Forest",
-				"Placeholder Description",
-				"Placeholder East"
-				+ "Placeholder South"
-				+ "Placeholder West");
-		r.setExits("", "mine", "forest1", "beach", "", "");
+				"This part of the forest is dense with trees",
+				"Heading east, there is a clearing where you can see what looks to be a mine."
+				+ "Heading south there is a pathway to enter the forest, back to the clearing where your ship resides."
+				+ "Following the river heading to the west you reach a beach.");
+		r.setExits("", "umine", "forest1", "beach", "", "");
 		roomList.put("forest2", r);
 
-		r = new Room("Mines",
-				"Placeholder Description",
-				"Placeholder East"
-				+ "Placeholder West");
-		r.setExits("", "goldmine", "", "forest2", "", "");
-		roomList.put("mine", r);
+		r = new Room("Upper Mine",
+				"At the top of the mine there is a minecart on a track.",
+				"Heading South there is a path back to the forest"
+				+ "Heading down you see a miners hat sitting on the floor, lighting up the room.");
+		r.setExits("", "", "", "forest2", "", "lmine");
+		roomList.put("umine", r);
+
+		r = new Room("Lower Mine",
+				"You see a hat on the ground with a light on it lighting up the east wall, against that wall you see the ship engine. On the east wall you see an image depicting a sun shining down onto a field of crops.",
+				"Heading east there seems to be another room you can enter."
+				+ "You can also go back up the mine.");
+		r.setExits("", "goldmine", "", "", "umine", "");
+		roomList.put("lmine", r);
 
 		r = new Room("Gold Mine",
-				"Placeholder Description",
-				"Placeholder West");
-		r.setExits("", "", "", "mine", "", "");
+				"The room is filled with piles of gold that glisten when you turn to look at them.",
+				"You climb through the hole in the wall that you broke to the west, re-entering the lower part of the mines.");
+		r.setExits("", "", "", "lmine", "", "");
 		roomList.put("goldmine", r);
 
 		r = new Room("Beach",
-				"Placeholder Description",
-				"Placeholder East"
-				+ "Placeholder South");
+				"On this beach you see a river flowing into the ocean. The ocean spans as far as you can see.",
+				"Following the river you come to an opening in the forests."
+				+ "Heading south, you come across a clearing");
 		r.setExits("", "forest2", "clearing", "", "", "");
 		roomList.put("beach", r);
 
 		r = new Room("Forest Clearing",
-				"Placeholder Description",
-				"Placeholder North"
-				+ "Placeholder East"
-				+ "Placeholder South"
-				+ "There is a lake that you cannot see to the bottom of down below");
+				"The forest has a clearing here, a lake below is surrounded by trees.",
+				"Heading north you reach a beach"
+				+ "Heading east you enter the forest, back to the clearing where your ship resides."
+				+ "Heading south the forest becomes less dense, before disappearing as you enter a rocky landscape, where you find mountains"
+				+ "There is a lake that you cannot see to the bottom of down below. The sun reflecting off of it is too bright.");
 		r.setExits("beach", "forest1", "mountains", "", "", "lake");
 		roomList.put("clearing", r);
 
 		r = new Room("Lake",
-				"Placeholder Description",
-				"Placeholder East"
-				+ "Placeholder Up");
+				"Looking around the lake you see small plants along the bottom of the lake, as well as many crevices lining the walls.",
+				"Swimming east towards where your ship was you notice a cave."
+				+ "Swimming back up you reach the surface, where you climb out and stand on the path");
 		r.setExits("", "cave1", "", "", "clearing", "");
 		roomList.put("lake", r);
 		
 		r = new Room("Cave",
-				"Placeholder Description",
-				"Placeholder West");
+				"A small room full of bright coral and strange plants lighting up the room. The plants are stems with white bulbs on the end emanating light.",
+				"Exiting the small cave on the west, you re-enter the lake");
 		r.setExits("", "", "", "lake", "", "");
 		roomList.put("cave1", r);
 
 		r = new Room("Mountains",
-				"Placeholder Description",
-				"Placeholder North"
+				"The rocky landscape is home to many mountains.",
+				"Heading north you enter the forest, back to the clearing where your ship resides."
 				+ "You see a cave to the west, it is too dark to see inside"
-				+ "Placeholder Up");
+				+ "Feel free to climb up the mountains to get a better view of this planet");
 		r.setExits("forest1", "", "", "cave2", "peak", "");
 		roomList.put("mountains", r);
 
 		r = new Room("Mountain Peak",
-				"Placeholder Description",
-				"Placeholder Down");
+				"Looking around from up here you can see a beach far off to the north west. Off to the east you can see a desert, and somewhere in the middle is covered in forest. Though you see a clearing off to the west part of the forest as well as farther north.",
+				"I think you should head down, it's quite high up here");
 		r.setExits("", "", "", "", "", "mountains");
 		roomList.put("peak", r);
 
 		r = new Room("Cave",
-				"Placeholder Description",
-				"Placeholder East"
-				+ "Placeholder Down");
+				"The cave is vast and empty. You cannot see properly due to how dark it is.",
+				"You exit the cave to the east and return to the mountains."
+				+ "You head down into a hidden area of the cave.");
 		r.setExits("", "mountains", "", "", "", "secret");
 		roomList.put("cave2", r);
 
 		r = new Room("Secret Cave",
-				"Placeholder Description",
-				"Placeholder Up");
+				"You found a secret cave!",
+				"You head back up into the main cave.");
 		r.setExits("", "", "", "", "cave2", "");
 		roomList.put("secret", r);
 	}
