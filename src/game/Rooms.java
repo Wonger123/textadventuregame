@@ -6,6 +6,7 @@ class Room {
 	// String name;
 	String displayName;
 	String description;
+	String directions;
 	boolean isDark;
 	//boolean isVisited;
 	String N, E, S, W, U, D;
@@ -15,6 +16,7 @@ class Room {
 	Room(String displayName, String description, String directions) {
 		this.displayName = displayName;
 		this.description = description;
+		this.directions = directions;
 	}
 
 	void setExits(String N, String E, String S, String W, String U, String D) {
