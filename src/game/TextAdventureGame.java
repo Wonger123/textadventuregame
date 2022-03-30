@@ -3,7 +3,7 @@ package game;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.ArrayList;
-import java.util.Arrays;
+//import java.util.Arrays;
 
 public class TextAdventureGame {
 
@@ -14,7 +14,7 @@ public class TextAdventureGame {
 	static String description;
 	static int roomCounter;
 	static boolean roomChange = false;
-	static ArrayList inventory = new ArrayList();
+	static ArrayList <String> inventory = new ArrayList <String>();
 
 	public static void main(String[] args) {
 		boolean playing = true;

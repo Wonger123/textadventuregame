@@ -10,7 +10,7 @@ class Room {
 	boolean isDark;
 	//boolean isVisited;
 	String N, E, S, W, U, D;
-	ArrayList items = new ArrayList();
+	ArrayList<String> items = new ArrayList<String>();
 
 	// constructor
 	Room(String displayName, String description, String directions) {
