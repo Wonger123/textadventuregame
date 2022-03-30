@@ -1,12 +1,19 @@
 package game;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class TextAdventureGame {
 
 	static Scanner sc = new Scanner(System.in);
     static HashMap<String, Room> roomList = new HashMap<String, Room>();
+	static HashMap<String, Items> itemList = new HashMap<String, Items>();
     static String currentRoom;
+	static int roomCounter;
+	static boolean roomChange = false;
+	static ArrayList inventory = new ArrayList();
 
 	public static void main(String[] args)
     {
@@ -15,9 +22,11 @@ public class TextAdventureGame {
         setup();
         while (playing)
         {
-            System.out.print("What would you like to do? ");
+			System.out.print(commandPrompt());
+			roomChange = false;
             command = getCommand();
             playing = parseCommand(command);
+			playing = death();
         }
 	}
 
@@ -35,7 +44,7 @@ public class TextAdventureGame {
 		String input = YorN("Would you like to play? (Y/N): ");
 		if (input.equals("Y")) {
 			System.out.println("Game Commencing...");
-            System.out.println ("You awake in a forest, the last thing that you remember was flying towards mars when you crashed into a rock and went off course. Now, lying in pieces near you, your ship is unusable. You notice some parts are missing as well. You think you should probably go find them instead of laying here until you die.");
+            System.out.println ("You awake in a forest, the last thing that you remember was flying towards Mars when you crashed into a rock and went off course. Now, lying in pieces near you, your ship is unusable. You notice some parts are missing as well. You think you should probably go find them instead of laying here until you die.");
 		}
 		if (input.equals("N")) {
 			System.out.print("Have a good day :)");
@@ -60,7 +69,7 @@ public class TextAdventureGame {
 		return playerInput;
 	}
 	
-	static String YorN(String msg) { // checks for invalid answer when starting the game
+	static String YorN(String msg) { // handles exceptions for Yes or No questions
 		System.out.print(msg);
 		String check = sc.next().toUpperCase();
 		sc.nextLine();
@@ -80,7 +89,6 @@ public class TextAdventureGame {
 		text = text.toLowerCase().trim();
 		
 		//P2. word replacement
-		text = text.replaceAll(" into ", " in ");
 		text = text.replaceAll("pick up", "pickup");
 		text = text.replaceAll("look around", "look");
 		text = text.replaceAll("climb up", "up");
@@ -88,10 +96,10 @@ public class TextAdventureGame {
 		String words[] = text.split(" ");
 		
 		//P3. remove all instances of "THE"
-		ArrayList wordlist = new ArrayList(Arrays.asList(words));		//array list of words
+		/*ArrayList wordlist = new ArrayList(Arrays.asList(words));		//array list of words
 		for(int i=0; i< wordlist.size(); i++) {
 			if (wordlist.get(i).equals("the")) wordlist.remove(i--);			
-		}
+		}*/
 
 		//separate out into word1, word2, etc.
 		String word1 = words[0];
@@ -110,7 +118,7 @@ public class TextAdventureGame {
 			if (answer.equals("Y"))
             {
 				System.out.print("Thanks for playing. Bye.");
-				return false;
+				System.exit(0);
 			}
 
             if (answer.equals("N"))
@@ -122,6 +130,10 @@ public class TextAdventureGame {
 		case "n": case "e": case "s": case "w": case "u": case "d":
 		case "north": case "east": case "south": case "west": case "up": case "down":
 			movingRooms(word1.charAt(0));
+			break;
+
+		case "look":
+			System.out.println(roomList.get(currentRoom).directions);
 			break;
 
 		/*case "i": case "inventory":
@@ -155,11 +167,41 @@ public class TextAdventureGame {
         {
             System.out.println("You cannot go there!");
         }
-
         else
         {
             currentRoom = roomList.get(currentRoom).getExit(direction);
+			roomCounter ++;
+			roomChange = true;
         }
         System.out.println(roomList.get(currentRoom).displayName + "\n" + roomList.get(currentRoom).description);
     }
+
+	static boolean death()
+	{
+		if (roomCounter == 52) 
+		{
+			System.out.println("You've ran out of food this morning. You collapse to the ground and die");
+			return false;
+		}
+		else return true;
+	}
+
+	static String commandPrompt()
+	{
+		String prompt;
+		if (roomCounter == 0 && roomChange == true)
+		{
+			prompt = "Rise and Shine! It's Day " + (roomCounter/7 + 1) + "!\nWhat would you like to start off with today? ";
+		}
+		else if (roomCounter%7 == 0 && roomChange == true)
+		{
+			currentRoom = "forest1";
+			prompt = "It's getting dark and cold out, you start to walk back to the Forest where your base camp is.\nRise and Shine! It's Day " + (roomCounter/7 + 1) + "!\nWhat would you like to start off with today? ";
+		}
+		else
+		{
+			prompt = "What would you like to do? ";
+		}
+		return prompt;
+	}
 }
