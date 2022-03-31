@@ -3,7 +3,7 @@ package game;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.ArrayList;
-import java.util.Arrays;
+//import java.util.Arrays;
 
 public class TextAdventureGame {
 
@@ -11,9 +11,10 @@ public class TextAdventureGame {
 	static HashMap<String, Room> roomList = new HashMap<String, Room>();
 	static HashMap<String, Items> itemList = new HashMap<String, Items>();
 	static String currentRoom;
+	static String description;
 	static int roomCounter;
 	static boolean roomChange = false;
-	static ArrayList inventory = new ArrayList();
+	static ArrayList <String> inventory = new ArrayList <String>();
 
 	public static void main(String[] args) {
 		boolean playing = true;
@@ -31,6 +32,7 @@ public class TextAdventureGame {
 	static void setup() {
 		// Object, Map and Variable Initialization
 		Room.setupRooms(roomList);
+		Items.setupItems(itemList, roomList);
 		currentRoom = "forest1";
 
 		// Intro
@@ -42,7 +44,7 @@ public class TextAdventureGame {
 		if (input.equals("Y")) {
 			System.out.println("Game Commencing...");
 			System.out.println(
-					"You awake in a forest, the last thing that you remember was flying towards Mars when you crashed into a rock and went off course. Now, lying in pieces near you, your ship is unusable. You notice some parts are missing as well. You think you should probably go find them instead of laying here until you die.");
+					"You awake in a forest, the last thing that you remember was flying towards Mars when you crashed into a rock and went off course.\nNow, lying in pieces near you, your ship is unusable. You notice some parts are missing as well. You think you should probably go find them instead of laying here until you die.");
 		}
 		if (input.equals("N")) {
 			System.out.print("Have a good day :)");
@@ -89,6 +91,8 @@ public class TextAdventureGame {
 		text = text.replaceAll("pick up", "pickup");
 		text = text.replaceAll("look around", "look");
 		text = text.replaceAll("climb up", "up");
+		text = text.replaceAll("go ", "");
+		text = text.replaceAll("move ", "");
 
 		String words[] = text.split(" ");
 
@@ -112,9 +116,7 @@ public class TextAdventureGame {
 		switch (word1) {
 
 			/**** one word commands ****/
-			case "quit":
-			case "exit":
-			case "leave":
+			case "quit": case "exit": case "leave":
 				String answer = YorN("Do you really want to quit the game? (Y/N): ");
 				if (answer.equals("Y")) {
 					System.out.print("Thanks for playing. Bye.");
@@ -126,23 +128,15 @@ public class TextAdventureGame {
 					return true;
 				}
 
-			case "n":
-			case "e":
-			case "s":
-			case "w":
-			case "u":
-			case "d":
-			case "north":
-			case "east":
-			case "south":
-			case "west":
-			case "up":
-			case "down":
+			case "n": case "e": case "s": case "w": case "u": case "d":
+			case "north": case "east": case "south": case "west": case "up": case "down":
 				movingRooms(word1.charAt(0));
 				break;
 
 			case "look":
 				System.out.println(roomList.get(currentRoom).directions);
+				System.out.println("There are " + roomList.get(currentRoom).items.size() + " items in the area");
+				System.out.println(getItems());
 				break;
 
 			/*
@@ -161,10 +155,9 @@ public class TextAdventureGame {
 			 */
 
 			/**** two word commands ****/
-			case "go":
-			case "move":
+			/*case "go": case "move":
 				movingRooms(word2.charAt(0));
-				break;
+				break;*/
 
 			default:
 				System.out.println("Sorry, I don't understand that command");
@@ -205,5 +198,21 @@ public class TextAdventureGame {
 			prompt = "What would you like to do? ";
 		}
 		return prompt;
+	}
+
+	static String getItems()
+	{
+		if (roomList.get(currentRoom).items.size() == 0)
+		{
+			description = "";
+		}
+		else
+		{
+			for (int i = 0; i < roomList.get(currentRoom).items.size(); i++)
+			{
+				description += itemList.get(roomList.get(currentRoom).items.get(i)).itemName + "\n" + itemList.get(roomList.get(currentRoom).items.get(i)).itemDescription + "\n";
+			}
+		}
+		return description;
 	}
 }
