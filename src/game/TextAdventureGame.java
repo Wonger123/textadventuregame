@@ -159,6 +159,16 @@ public class TextAdventureGame {
 				movingRooms(word2.charAt(0));
 				break;*/
 
+			case "follow":
+				if (word2.equals("river"))
+				{
+					if (currentRoom.equals("forest2")) movingRooms('w');
+					if (currentRoom.equals("beach")) movingRooms('e');
+					else System.out.println("There's no river here");
+				}
+				else System.out.println("What do you want me to follow?");
+				break;
+
 			default:
 				System.out.println("Sorry, I don't understand that command");
 		}
@@ -214,5 +224,17 @@ public class TextAdventureGame {
 			}
 		}
 		return description;
+	}
+
+	static char followRiver(String word2)
+	{
+		if (word2.equals("river"))
+		{
+			if (currentRoom.equals("forest2")) movingRooms('w');
+			if (currentRoom.equals("beach")) movingRooms('e');
+			else System.out.println("There's no river here");
+		}
+			else System.out.println("What do you want me to follow?");
+		
 	}
 }
