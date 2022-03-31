@@ -141,17 +141,18 @@ public class TextAdventureGame {
 
 			case "jump":
 				if (currentRoom.equals("peak")) System.out.println("Suicide is a real issue, please call: 1-833-456-4566. You still need to make it home first");
+				else System.out.println("Have fun!");
 				break;
 
 			/*
 			 * case "i": case "inventory":
 			 * showInventory();
 			 * break;
+
 			 * case "help":
 			 * printHelp();
 			 * break;
 			 * case "pickup":
-			 * case "swim":
 			 * case "break": case "mine":
 			 * case "look":
 			 * case "fix":
@@ -168,6 +169,8 @@ public class TextAdventureGame {
 				}
 				else System.out.println("What do you want me to follow?");
 				break;
+
+			case "swim":
 
 			default:
 				System.out.println("Sorry, I don't understand that command");
