@@ -11,7 +11,7 @@ public class TextAdventureGame {
 	static HashMap<String, Room> roomList = new HashMap<String, Room>();
 	static HashMap<String, Items> itemList = new HashMap<String, Items>();
 	static String currentRoom;
-	static String description;
+	static String description = "";
 	static int roomCounter;
 	static boolean roomChange = false;
 	static ArrayList <String> inventory = new ArrayList <String>();
