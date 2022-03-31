@@ -91,6 +91,8 @@ public class TextAdventureGame {
 		text = text.replaceAll("pick up", "pickup");
 		text = text.replaceAll("look around", "look");
 		text = text.replaceAll("climb up", "up");
+		text = text.replaceAll("go ", "");
+		text = text.replaceAll("move ", "");
 
 		String words[] = text.split(" ");
 
@@ -153,9 +155,9 @@ public class TextAdventureGame {
 			 */
 
 			/**** two word commands ****/
-			case "go": case "move":
+			/*case "go": case "move":
 				movingRooms(word2.charAt(0));
-				break;
+				break;*/
 
 			default:
 				System.out.println("Sorry, I don't understand that command");
