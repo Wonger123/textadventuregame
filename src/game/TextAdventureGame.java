@@ -11,7 +11,7 @@ public class TextAdventureGame {
 	static HashMap<String, Room> roomList = new HashMap<String, Room>();
 	static HashMap<String, Items> itemList = new HashMap<String, Items>();
 	static String currentRoom;
-	static String description;
+	static String description = "";
 	static int roomCounter;
 	static boolean roomChange = false;
 	static ArrayList <String> inventory = new ArrayList <String>();
@@ -139,15 +139,20 @@ public class TextAdventureGame {
 				System.out.println(getItems());
 				break;
 
+			case "jump":
+				if (currentRoom.equals("peak")) System.out.println("Suicide is a real issue, please call: 1-833-456-4566. You still need to make it home first");
+				else System.out.println("Have fun!");
+				break;
+
 			/*
 			 * case "i": case "inventory":
 			 * showInventory();
 			 * break;
+
 			 * case "help":
 			 * printHelp();
 			 * break;
 			 * case "pickup":
-			 * case "swim":
 			 * case "break": case "mine":
 			 * case "look":
 			 * case "fix":
@@ -155,10 +160,6 @@ public class TextAdventureGame {
 			 */
 
 			/**** two word commands ****/
-			/*case "go": case "move":
-				movingRooms(word2.charAt(0));
-				break;*/
-
 			case "follow":
 				if (word2.equals("river"))
 				{
@@ -168,6 +169,8 @@ public class TextAdventureGame {
 				}
 				else System.out.println("What do you want me to follow?");
 				break;
+
+			case "swim":
 
 			default:
 				System.out.println("Sorry, I don't understand that command");

@@ -47,11 +47,11 @@ class Room {
 	static void setupRooms(HashMap<String, Room> roomList) {
 		Room r = new Room("Forest",
 				"This small clearing in the trees houses your rocket. In each direction there are dirt pathways.",
-				"Looking north you see reach another part of this forest.\n"
-				+ "Looking east you see find a desert.\n"
-				+ "Looking south you see come across some mountains.\n"
+				"Looking north you can reach another part of this forest.\n"
+				+ "Looking east you can find a desert.\n"
+				+ "Looking south you can come across some mountains.\n"
 				+ "Looking west you will come across a clearing, surrounded by trees.\n"
-				+ "You climb up into the trees and find a structure.");
+				+ "You can climb up into the trees and find a structure.");
 		r.setExits("forest2", "desert", "mountains", "clearing", "trees", "");
 		roomList.put("forest1", r);
 		
@@ -98,7 +98,7 @@ class Room {
 		r = new Room("Beach",
 				"On this beach you see a river flowing into the ocean. The ocean spans as far as you can see.",
 				"If you follow the river on the east, you will come to an opening in the forests.\n"
-				+ "Looking south, you see across a clearing");
+				+ "Looking south, you see across a clearing.");
 		r.setExits("", "forest2", "clearing", "", "", "");
 		roomList.put("beach", r);
 
@@ -114,7 +114,7 @@ class Room {
 		r = new Room("Lake",
 				"Looking around the lake you see small plants along the bottom of the lake, as well as many crevices lining the walls.",
 				"You can swim east towards where your ship was you notice a cave.\n"
-				+ "If you swimming back up you will reach the surface, where you can climb out return to the clearing.");
+				+ "If you swim back up you will reach the surface, where you can climb out return to the clearing.");
 		r.setExits("", "cave1", "", "", "clearing", "");
 		roomList.put("lake", r);
 		
