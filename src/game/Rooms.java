@@ -98,7 +98,7 @@ class Room {
 		r = new Room("Beach",
 				"On this beach you see a river flowing into the ocean. The ocean spans as far as you can see.",
 				"If you follow the river on the east, you will come to an opening in the forests.\n"
-				+ "Looking south, you see across a clearing");
+				+ "Looking south, you see across a clearing.");
 		r.setExits("", "forest2", "clearing", "", "", "");
 		roomList.put("beach", r);
 
