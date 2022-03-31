@@ -114,7 +114,7 @@ class Room {
 		r = new Room("Lake",
 				"Looking around the lake you see small plants along the bottom of the lake, as well as many crevices lining the walls.",
 				"You can swim east towards where your ship was you notice a cave.\n"
-				+ "If you swimming back up you will reach the surface, where you can climb out return to the clearing.");
+				+ "If you swim back up you will reach the surface, where you can climb out return to the clearing.");
 		r.setExits("", "cave1", "", "", "clearing", "");
 		roomList.put("lake", r);
 		
