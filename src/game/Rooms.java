@@ -47,9 +47,9 @@ class Room {
 	static void setupRooms(HashMap<String, Room> roomList) {
 		Room r = new Room("Forest",
 				"This small clearing in the trees houses your rocket. In each direction there are dirt pathways.",
-				"Looking north you see reach another part of this forest.\n"
-				+ "Looking east you see find a desert.\n"
-				+ "Looking south you see come across some mountains.\n"
+				"Looking north you can reach another part of this forest.\n"
+				+ "Looking east you can find a desert.\n"
+				+ "Looking south you can come across some mountains.\n"
 				+ "Looking west you will come across a clearing, surrounded by trees.\n"
 				+ "You climb up into the trees and find a structure.");
 		r.setExits("forest2", "desert", "mountains", "clearing", "trees", "");
