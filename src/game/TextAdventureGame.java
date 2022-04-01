@@ -209,6 +209,8 @@ public class TextAdventureGame {
 			return false;
 		} else
 			return true;
+		
+		// drown when swimming without activated scuba gear
 	}
 
 	static String commandPrompt() {
