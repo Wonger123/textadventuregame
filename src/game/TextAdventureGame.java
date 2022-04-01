@@ -14,7 +14,8 @@ public class TextAdventureGame {
 	static String description = "";
 	static int roomCounter;
 	static boolean roomChange = false;
-	static ArrayList <Items> inventory = new ArrayList <Items>();
+	static boolean fixedShip = false;
+	static ArrayList <Items> inventory = new ArrayList <Items>(); //Change to <String> and see if you can figure this out...
 
 	public static void main(String[] args) {
 		boolean playing = true;
@@ -42,9 +43,9 @@ public class TextAdventureGame {
 
 		String input = YorN("Would you like to play? (Y/N): ");
 		if (input.equals("Y")) {
-			System.out.println("\nGame Commencing...\n");
-			System.out.println(
-					"You awake in a forest, the last thing that you remember was flying towards Mars when you crashed into a rock and went off course.\nNow, lying in pieces near you, your ship is unusable. You notice some parts are missing as well. You think you should probably go find them instead of laying here until you die.");
+			System.out.println("Game Commencing...");
+			System.out.println();
+			System.out.println("You awake in a forest, the last thing that you remember was flying towards Mars when you crashed into a rock and went off course.\nNow, lying in pieces near you, your ship is unusable. You notice some parts are missing as well. You think you should probably go find them instead of laying here until you die.");
 		}
 		if (input.equals("N")) {
 			System.out.print("Have a good day :)");
@@ -123,7 +124,7 @@ public class TextAdventureGame {
 
 			/**** one word commands ****/
 			case "quit": case "exit": case "leave":
-				String answer = YorN("\nDo you really want to quit the game? (Y/N): ");
+				String answer = YorN("Do you really want to quit the game? (Y/N): ");
 				if (answer.equals("Y")) {
 					System.out.print("Thanks for playing. Bye.");
 					System.exit(0);
@@ -154,15 +155,18 @@ public class TextAdventureGame {
 			case "i": case "inventory":
 				getInventory();
 				break;
-			/*
-			case "help":
-				printHelp();
-				break;
 			case "break": case "mine":
-			case "look":
+				break;
+			case "use":
 			case "fix":
-			case "takeoff"
-			 */
+				partCheck();
+				fixedShip = true;
+				break;
+			case "takeoff":
+				if (fixedShip && currentRoom == "forest1") ending();
+				else if(currentRoom != "forest1") System.out.println("You need to be in the Forest Basecamp to take off!");
+				else System.out.println("Your ship is still broken, you need to fix it!");
+				break;
 
 			/**** two word commands ****/
 			case "follow":
@@ -209,8 +213,6 @@ public class TextAdventureGame {
 			return false;
 		} else
 			return true;
-		
-		// drown when swimming without activated scuba gear
 	}
 
 	static String commandPrompt() {
@@ -305,5 +307,21 @@ public class TextAdventureGame {
 			}
 			System.out.println(list);
 		}
+	}
+
+	static void partCheck()
+	{
+		if (inventory.contains(itemList.get("leftwing")) && inventory.contains(itemList.get("nose")) && inventory.contains(itemList.get("engine")) && inventory.contains(itemList.get("rightwing")))
+		{
+			if (currentRoom == "forest1") System.out.println("You have enough parts to fix the ship and the ship is fixed!");
+			else System.out.println("You need to be at your Forest Basecamp to fix your ship!");
+		}
+		else System.out.println("You don't have enough parts");
+	}
+
+	static void ending()
+	{
+		System.out.println("Congrats, you made it out alive, only to realize that you were dreaming.");
+		System.exit(0);
 	}
 }

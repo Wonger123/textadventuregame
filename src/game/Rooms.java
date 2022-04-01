@@ -45,7 +45,7 @@ class Room {
 	}
 
 	static void setupRooms(HashMap<String, Room> roomList) {
-		Room r = new Room("Forest",
+		Room r = new Room("Forest - Base Camp",
 				"This small clearing in the trees houses your rocket. In each direction there are dirt pathways.",
 				"Looking north you can reach another part of this forest.\n"
 				+ "Looking east you can find a desert.\n"
