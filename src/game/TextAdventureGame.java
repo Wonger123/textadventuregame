@@ -268,7 +268,7 @@ public class TextAdventureGame {
 		else System.out.println("You can't follow that.");
 	}
 
-	static void pickupItem(String item)
+	static void pickupItem(String item) //Remind user if they've picked something up
 	{
 		if (roomList.get(currentRoom).items.size() > 0)
 		{
