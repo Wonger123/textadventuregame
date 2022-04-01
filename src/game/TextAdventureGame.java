@@ -236,7 +236,7 @@ public class TextAdventureGame {
 		{
 			for (int i = 0; i < roomList.get(currentRoom).items.size(); i++)
 			{
-				System.out.println(itemList.get(roomList.get(currentRoom).items.get(i)).itemName);
+				System.out.println(itemList.get(roomList.get(currentRoom).items.get(i)).itemDisplayName);
 				System.out.println(itemList.get(roomList.get(currentRoom).items.get(i)).itemDescription);
 			}
 		}
