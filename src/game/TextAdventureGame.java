@@ -205,7 +205,7 @@ public class TextAdventureGame {
 
 	static boolean death() {
 		if (roomCounter == 52) {
-			System.out.println("You've ran out of food this morning. You collapse to the ground and die");
+			System.out.println("You've ran out of food this morning. You collapse to the ground and die.");
 			return false;
 		} else
 			return true;
