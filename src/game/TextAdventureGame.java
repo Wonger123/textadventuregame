@@ -14,6 +14,7 @@ public class TextAdventureGame {
 	static String description = "";
 	static int roomCounter;
 	static boolean roomChange = false;
+	static boolean fixedShip = false;
 	static ArrayList <Items> inventory = new ArrayList <Items>(); //Change to <String> and see if you can figure this out...
 
 	public static void main(String[] args) {
@@ -159,8 +160,12 @@ public class TextAdventureGame {
 			case "use":
 			case "fix":
 				partCheck();
+				fixedShip = true;
 				break;
 			case "takeoff":
+				if (fixedShip && currentRoom == "forest1") ending();
+				else if(currentRoom != "forest1") System.out.println("You need to be in the Forest Basecamp to take off!");
+				else System.out.println("Your ship is still broken, you need to fix it!");
 				break;
 
 			/**** two word commands ****/
@@ -312,5 +317,11 @@ public class TextAdventureGame {
 			else System.out.println("You need to be at your Forest Basecamp to fix your ship!");
 		}
 		else System.out.println("You don't have enough parts");
+	}
+
+	static void ending()
+	{
+		System.out.println("Congrats, you made it out alive, only to realize that you were dreaming.");
+		System.exit(0);
 	}
 }
