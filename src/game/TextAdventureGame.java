@@ -279,13 +279,10 @@ public class TextAdventureGame {
 					inventory.add(itemList.get(item));
 					System.out.println("Item added to inventory!");
 					roomList.get(currentRoom).items.remove(item);
-					break;
-				}
-				else
-				{
-					System.out.println("Item is not in this room");
+					return;
 				}
 			}
+			System.out.println("Item is not in this room");
 		}
 		else
 		{
