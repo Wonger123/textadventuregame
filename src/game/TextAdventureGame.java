@@ -42,9 +42,9 @@ public class TextAdventureGame {
 
 		String input = YorN("Would you like to play? (Y/N): ");
 		if (input.equals("Y")) {
-			System.out.println("Game Commencing...");
+			System.out.println("\nGame Commencing...\n");
 			System.out.println(
-					"You awake in a forest, the last thing that you remember was flying towards Mars when you crashed into a rock and went off course.\nNow, lying in pieces near you, your ship is unusable. You notice some parts are missing as well. You think you should probably go find them instead of laying here until you die.");
+					"You awake in a forest, the last thing that you remember was flying towards Mars when you crashed into a rock and went off course.\nNow, lying in pieces near you, your ship is unusable. You notice some parts are missing as well.\nYou think you should probably go find them instead of laying here until you die.");
 		}
 		if (input.equals("N")) {
 			System.out.print("Have a good day :)");
@@ -141,12 +141,12 @@ public class TextAdventureGame {
 
 			case "look":
 				System.out.println(roomList.get(currentRoom).directions);
-				System.out.println("There are " + roomList.get(currentRoom).items.size() + " items in the area");
+				System.out.println("There are " + roomList.get(currentRoom).items.size() + " items in the area:");
 				getItems();
 				break;
 
 			case "jump":
-				if (currentRoom.equals("peak")) System.out.println("Suicide is a real issue, please call: 1-833-456-4566. You still need to make it home first");
+				if (currentRoom.equals("peak")) System.out.println("Suicide is a real issue, please call: 1-833-456-4566. You still need to make it home first.");
 				else System.out.println("Have fun!");
 				break;
 
