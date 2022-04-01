@@ -14,7 +14,7 @@ public class TextAdventureGame {
 	static String description = "";
 	static int roomCounter;
 	static boolean roomChange = false;
-	static ArrayList <String> inventory = new ArrayList <String>();
+	static ArrayList <Items> inventory = new ArrayList <Items>();
 
 	public static void main(String[] args) {
 		boolean playing = true;
@@ -38,7 +38,7 @@ public class TextAdventureGame {
 		// Intro
 		System.out.println("Hello! Welcome to this text adventure game!");
 		System.out.println("Made by Raymond and Andrew");
-		System.out.println("Written by ");
+		System.out.println("Written by Ethan");
 
 		String input = YorN("Would you like to play? (Y/N): ");
 		if (input.equals("Y")) {
@@ -77,6 +77,7 @@ public class TextAdventureGame {
 		while (!check.equals("Y") && !check.equals("N")) {
 			System.out.print("Please enter a valid response (Y/N): ");
 			check = sc.next().toUpperCase();
+			sc.nextLine();
 		}
 		return check;
 	}
@@ -93,6 +94,11 @@ public class TextAdventureGame {
 		text = text.replaceAll("climb up", "up");
 		text = text.replaceAll("go ", "");
 		text = text.replaceAll("move ", "");
+		text = text.replaceAll("miner helment", "helmet");
+		text = text.replaceAll("scuba gear", "scuba");
+		text = text.replaceAll("left wing", "leftwing");
+		text = text.replaceAll("rocket ", "");
+		text = text.replaceAll("right wing", "rightwing");
 
 		String words[] = text.split(" ");
 
@@ -136,7 +142,7 @@ public class TextAdventureGame {
 			case "look":
 				System.out.println(roomList.get(currentRoom).directions);
 				System.out.println("There are " + roomList.get(currentRoom).items.size() + " items in the area");
-				System.out.println(getItems());
+				getItems();
 				break;
 
 			case "jump":
@@ -144,36 +150,43 @@ public class TextAdventureGame {
 				else System.out.println("Have fun!");
 				break;
 
+			
+			case "i": case "inventory":
+				getInventory();
+				break;
 			/*
-			 * case "i": case "inventory":
-			 * showInventory();
-			 * break;
-
-			 * case "help":
-			 * printHelp();
-			 * break;
-			 * case "pickup":
-			 * case "break": case "mine":
-			 * case "look":
-			 * case "fix":
-			 * case "takeoff"
+			case "help":
+				printHelp();
+				break;
+			case "break": case "mine":
+			case "look":
+			case "fix":
+			case "takeoff"
 			 */
 
 			/**** two word commands ****/
 			case "follow":
-				if (word2.equals("river"))
+				if (word2 != null)
 				{
-					if (currentRoom.equals("forest2")) movingRooms('w');
-					if (currentRoom.equals("beach")) movingRooms('e');
-					else System.out.println("There's no river here");
+					following(word2);
 				}
 				else System.out.println("What do you want me to follow?");
 				break;
 
 			case "swim":
+				if (word2 != null)
+				{
+					swimming(word2);
+				}
+				else System.out.println("Where do you want to swim?");
+				break;
+
+			case "pickup":
+				pickupItem(word2);
+				break;
 
 			default:
-				System.out.println("Sorry, I don't understand that command");
+				System.out.println("Sorry, you can't do that.");
 		}
 		System.out.println();
 		return true;
@@ -213,19 +226,85 @@ public class TextAdventureGame {
 		return prompt;
 	}
 
-	static String getItems()
+	static void getItems()
 	{
 		if (roomList.get(currentRoom).items.size() == 0)
 		{
-			description = "";
+			return;
 		}
 		else
 		{
 			for (int i = 0; i < roomList.get(currentRoom).items.size(); i++)
 			{
-				description += itemList.get(roomList.get(currentRoom).items.get(i)).itemName + "\n" + itemList.get(roomList.get(currentRoom).items.get(i)).itemDescription + "\n";
+				System.out.println(itemList.get(roomList.get(currentRoom).items.get(i)).itemName);
+				System.out.println(itemList.get(roomList.get(currentRoom).items.get(i)).itemDescription);
 			}
 		}
-		return description;
+	}
+
+	static void swimming(String word)
+	{
+		if (currentRoom.equals("clearing"))
+		{
+			if (word.charAt(0) =='d')
+			{
+				movingRooms('d');
+			}
+			else System.out.println("You can't swim in that direction!");
+		}
+		else if (currentRoom.equals("lake")) movingRooms(word.charAt(0));
+		else if (currentRoom.equals("cave1")) movingRooms(word.charAt(0));
+		else System.out.println("There's nowhere to swim here!");
+	}
+
+	static void following(String word)
+	{
+		if (word.equals("river"))
+		{
+			if (currentRoom.equals("forest2")) movingRooms('w');
+			else if (currentRoom.equals("beach")) movingRooms('e');
+			else System.out.println("There's no river here");
+		}
+		else System.out.println("You can't follow that.");
+	}
+
+	static void pickupItem(String item)
+	{
+		if (roomList.get(currentRoom).items.size() > 0)
+		{
+			for (int i = 0; i < roomList.get(currentRoom).items.size(); i++)
+			{
+				if (itemList.get(roomList.get(currentRoom).items.get(i)).itemName.equals(item))
+				{
+					inventory.add(itemList.get(item));
+					System.out.println("Item added to inventory!");
+					roomList.get(currentRoom).items.remove(item);
+					break;
+				}
+				else
+				{
+					System.out.println("Item is not in this room");
+				}
+			}
+		}
+		else
+		{
+			System.out.println("Nothing to pickup here");
+		}
+	}
+
+	static void getInventory()
+	{
+		String list = "Inventory: ";
+		if (inventory.size() == 0) System.out.println("Nothing in inventory");
+		else if (inventory.size() == 1) System.out.println("Inventory: " + inventory.get(0).itemDisplayName);
+		else
+		{
+			for (int i = 0; i < inventory.size(); i++)
+			{
+				list += "|" + inventory.get(i).itemDisplayName + "| ";
+			}
+			System.out.println(list);
+		}
 	}
 }
