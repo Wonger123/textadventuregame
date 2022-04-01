@@ -42,7 +42,7 @@ public class TextAdventureGame {
 
 		String input = YorN("Would you like to play? (Y/N): ");
 		if (input.equals("Y")) {
-			System.out.println("Game Commencing...");
+			System.out.println("\nGame Commencing...\n");
 			System.out.println(
 					"You awake in a forest, the last thing that you remember was flying towards Mars when you crashed into a rock and went off course.\nNow, lying in pieces near you, your ship is unusable. You notice some parts are missing as well. You think you should probably go find them instead of laying here until you die.");
 		}
@@ -123,7 +123,7 @@ public class TextAdventureGame {
 
 			/**** one word commands ****/
 			case "quit": case "exit": case "leave":
-				String answer = YorN("Do you really want to quit the game? (Y/N): ");
+				String answer = YorN("\nDo you really want to quit the game? (Y/N): ");
 				if (answer.equals("Y")) {
 					System.out.print("Thanks for playing. Bye.");
 					System.exit(0);
