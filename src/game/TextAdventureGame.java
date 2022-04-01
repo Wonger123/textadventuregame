@@ -268,7 +268,7 @@ public class TextAdventureGame {
 		else System.out.println("You can't follow that.");
 	}
 
-	static void pickupItem(String item)
+	static void pickupItem(String item) //Remind user if they've picked something up
 	{
 		if (roomList.get(currentRoom).items.size() > 0)
 		{
@@ -279,13 +279,10 @@ public class TextAdventureGame {
 					inventory.add(itemList.get(item));
 					System.out.println("Item added to inventory!");
 					roomList.get(currentRoom).items.remove(item);
-					break;
-				}
-				else
-				{
-					System.out.println("Item is not in this room");
+					return;
 				}
 			}
+			System.out.println("Item is not in this room");
 		}
 		else
 		{
