@@ -14,20 +14,19 @@ public class TextAdventureGame {
 
 	static String description = "";
 	static int roomCounter;
-	static boolean roomChange = false;
+	static boolean roomChange = true;
 	static boolean fixedShip = false;
-	static ArrayList <Items> inventory = new ArrayList <Items>(); //Change to <String> and see if you can figure this out...
+	static ArrayList <String> inventory = new ArrayList <String>();
 
 	public static void main(String[] args) {
 		boolean playing = true;
 		String command;
 		setup();
 		while (playing) {
-			System.out.print(commandPrompt());
+			commandPrompt();
 			roomChange = false;
 			command = getCommand();
 			playing = parseCommand(command);
-			playing = death();
 		}
 	}
 
@@ -102,6 +101,7 @@ public class TextAdventureGame {
 		text = text.replaceAll("left wing", "leftwing");
 		text = text.replaceAll("rocket ", "");
 		text = text.replaceAll("right wing", "rightwing");
+		text = text.replaceAll("statistics", "stats");
 
 		String words[] = text.split(" ");
 
@@ -153,21 +153,29 @@ public class TextAdventureGame {
 				else System.out.println("Have fun!");
 				break;
 
-			
-			case "i": case "inventory":
+			case "inventory":
 				getInventory();
 				break;
+
 			case "break": case "mine":
 				break;
+
 			case "use":
+				break;
+
 			case "fix":
 				partCheck();
 				fixedShip = true;
 				break;
+
 			case "takeoff":
 				if (fixedShip && currentRoom == "forest1") ending();
 				else if(currentRoom != "forest1") System.out.println("You need to be in the Forest Basecamp to take off!");
 				else System.out.println("Your ship is still broken, you need to fix it!");
+				break;
+
+			case "stats":
+				stats();
 				break;
 
 			/**** two word commands ****/
@@ -198,38 +206,43 @@ public class TextAdventureGame {
 		return true;
 	}
 
+	static void commandPrompt() {
+		if (roomCounter % 8 == 0 && roomChange == true) {
+			System.out.println("Rise and Shine! It's Day " + (roomCounter / 8 + 1) + "!");
+			if (roomCounter == 0) System.out.println(roomList.get(currentRoom).displayName + "\n" + roomList.get(currentRoom).description);
+			System.out.println("-------------------------------------------");
+			System.out.print("Areas Travelled Today: [0/7] - What would you like to start off with today? ");
+		}
+		else {
+			System.out.println("-------------------------------------------");
+			System.out.print("Areas Travelled Today: [" + roomCounter % 8 + "/7] - What would you like to do? ");
+		}
+	}
+
 	static void movingRooms(char direction) {
 		if (roomList.get(currentRoom).getExit(direction) == "") {
 			System.out.println("You cannot go there!");
-		} else {
-			currentRoom = roomList.get(currentRoom).getExit(direction);
+		}
+		else
+		{
 			roomCounter++;
+			if (roomCounter == 61)
+			{
+				System.out.println("You've ran out of food this morning. You collapse to the ground and die");
+				System.exit(0);
+			}
+			if (roomCounter != 0 && roomCounter % 8 == 0)
+			{
+				System.out.println("It's getting dark and cold out, you can't travel to another room. You walk back to your Forest Base Camp.");
+				currentRoom = "forest1";
+			}
+			else
+			{
+				currentRoom = roomList.get(currentRoom).getExit(direction);
+				System.out.println(roomList.get(currentRoom).displayName + "\n" + roomList.get(currentRoom).description);
+			}
 			roomChange = true;
 		}
-		System.out.println(roomList.get(currentRoom).displayName + "\n" + roomList.get(currentRoom).description);
-	}
-
-	static boolean death() {
-		if (roomCounter == 52) {
-			System.out.println("You've ran out of food this morning. You collapse to the ground and die");
-			return false;
-		} else
-			return true;
-	}
-
-	static String commandPrompt() {
-		String prompt;
-		if (roomCounter == 0 && roomChange == true) {
-			prompt = "Rise and Shine! It's Day " + (roomCounter / 7 + 1)
-					+ "!\nWhat would you like to start off with today? ";
-		} else if (roomCounter % 7 == 0 && roomChange == true) {
-			currentRoom = "forest1";
-			prompt = "It's getting dark and cold out, you start to walk back to the Forest where your base camp is.\nRise and Shine! It's Day "
-					+ (roomCounter / 7 + 1) + "!\nWhat would you like to start off with today? ";
-		} else {
-			prompt = "What would you like to do? ";
-		}
-		return prompt;
 	}
 
 	static void getItems()
@@ -282,7 +295,7 @@ public class TextAdventureGame {
 			{
 				if (itemList.get(roomList.get(currentRoom).items.get(i)).itemName.equals(item))
 				{
-					inventory.add(itemList.get(item));
+					inventory.add(item);
 					System.out.println("Item added to inventory!");
 					roomList.get(currentRoom).items.remove(item);
 					return;
@@ -300,12 +313,12 @@ public class TextAdventureGame {
 	{
 		String list = "Inventory: ";
 		if (inventory.size() == 0) System.out.println("Nothing in inventory");
-		else if (inventory.size() == 1) System.out.println("Inventory: " + inventory.get(0).itemDisplayName);
+		else if (inventory.size() == 1) System.out.println("Inventory: " + itemList.get(inventory.get(0)).itemDisplayName);
 		else
 		{
 			for (int i = 0; i < inventory.size(); i++)
 			{
-				list += "|" + inventory.get(i).itemDisplayName + "| ";
+				list += "|" + itemList.get(inventory.get(i)).itemDisplayName + "| ";
 			}
 			System.out.println(list);
 		}
@@ -313,7 +326,7 @@ public class TextAdventureGame {
 
 	static void partCheck()
 	{
-		if (inventory.contains(itemList.get("leftwing")) && inventory.contains(itemList.get("nose")) && inventory.contains(itemList.get("engine")) && inventory.contains(itemList.get("rightwing")))
+		if (inventory.contains("leftwing") && inventory.contains("nose") && inventory.contains("engine") && inventory.contains("rightwing"))
 		{
 			if (currentRoom == "forest1") System.out.println("You have enough parts to fix the ship and the ship is fixed!");
 			else System.out.println("You need to be at your Forest Basecamp to fix your ship!");
@@ -325,5 +338,10 @@ public class TextAdventureGame {
 	{
 		System.out.println("Congrats, you made it out alive, only to realize that you were dreaming.");
 		System.exit(0);
+	}
+
+	static void stats()
+	{
+		System.out.println("You have " + (61-roomCounter) + " moves left");
 	}
 }
