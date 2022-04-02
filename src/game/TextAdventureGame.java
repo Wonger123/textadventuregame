@@ -11,6 +11,7 @@ public class TextAdventureGame {
 	static HashMap<String, Room> roomList = new HashMap<String, Room>();
 	static HashMap<String, Items> itemList = new HashMap<String, Items>();
 	static String currentRoom;
+
 	static String description = "";
 	static int roomCounter;
 	static boolean roomChange = true;
@@ -43,6 +44,7 @@ public class TextAdventureGame {
 		String input = YorN("Would you like to play? (Y/N): ");
 		if (input.equals("Y")) {
 			System.out.println("Game Commencing...");
+
 			System.out.println();
 			System.out.println("You awake in a forest, the last thing that you remember was flying towards Mars when you crashed into a rock and went off course.\nNow, lying in pieces near you, your ship is unusable. You notice some parts are missing as well. You think you should probably go find them instead of laying here until you die.");
 		}
