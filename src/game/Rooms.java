@@ -52,6 +52,7 @@ class Room {
 				+ "Looking south you can come across some mountains.\n"
 				+ "Looking west you will come across a clearing, surrounded by trees.\n"
 				+ "You can climb up into the trees and find a structure.");
+
 		r.setExits("forest2", "desert", "mountains", "clearing", "trees", "");
 		roomList.put("forest1", r);
 		
