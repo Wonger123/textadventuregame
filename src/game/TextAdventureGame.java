@@ -3,7 +3,6 @@ package game;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.ArrayList;
-//import java.util.Arrays;
 
 public class TextAdventureGame {
 
@@ -16,19 +15,19 @@ public class TextAdventureGame {
 	static int roomCounter;
 	static boolean roomChange = true;
 	static boolean fixedShip = false;
-	static boolean helmetOn = false;
+	static int secretsFound;
 	static ArrayList <String> inventory = new ArrayList <String>();
 
 	public static void main(String[] args) {
-		boolean playing = true;
 		String command;
+		boolean playing = true;
 		setup();
 		while (playing) {
 			commandPrompt();
-			roomChange = false;
 			command = getCommand();
 			playing = parseCommand(command);
 		}
+		exit();
 	}
 
 	static void setup() {
@@ -55,28 +54,19 @@ public class TextAdventureGame {
 		}
 	}
 
+	//Get's user command
 	static String getCommand() {
 		String text = sc.nextLine();
 		return text;
 	}
 
-	static String response() { // takes player input, quits game if they input "exit"
-		String playerInput = sc.next();
-		sc.nextLine();
-
-		if (playerInput.equalsIgnoreCase("exit")) {
-			System.out.print("Thanks for playing :)");
-			System.exit(0);
-		}
-		return playerInput;
-	}
-
-	static String YorN(String msg) { // handles exceptions for Yes or No questions
+	//Handles Expceptions for Yes or No questions
+	static String YorN(String msg) {
 		System.out.print(msg);
 		String check = sc.next().toUpperCase();
 		sc.nextLine();
 
-		// checks if player response is valid
+		//Checks if player response is valid
 		while (!check.equals("Y") && !check.equals("N")) {
 			System.out.print("Please enter a valid response (Y/N): ");
 			check = sc.next().toUpperCase();
@@ -85,18 +75,17 @@ public class TextAdventureGame {
 		return check;
 	}
 
+	//Commands
 	static boolean parseCommand(String text) {
 
 		/***** PREPROCESSING *****/
-		// P1.
+		// P1. trim
 		text = text.toLowerCase().trim();
 
 		// P2. word replacement
 		text = text.replaceAll("pick up", "pickup");
 		text = text.replaceAll("look around", "look");
 		text = text.replaceAll("climb up", "up");
-		text = text.replaceAll("go ", "");
-		text = text.replaceAll("move ", "");
 		text = text.replaceAll("miner helment", "helmet");
 		text = text.replaceAll("scuba gear", "scuba");
 		text = text.replaceAll("left wing", "leftwing");
@@ -104,17 +93,10 @@ public class TextAdventureGame {
 		text = text.replaceAll("right wing", "rightwing");
 		text = text.replaceAll("statistics", "stats");
 		text = text.replaceAll("take off", "takeoff");
+		text = text.replaceAll(" the ", " ");
+		text = text.replaceAll(" axe", " pickaxe");
 
 		String words[] = text.split(" ");
-
-		// P3. remove all instances of "THE"
-		/*
-		 * ArrayList wordlist = new ArrayList(Arrays.asList(words)); //array list of
-		 * words
-		 * for(int i=0; i< wordlist.size(); i++) {
-		 * if (wordlist.get(i).equals("the")) wordlist.remove(i--);
-		 * }
-		 */
 
 		// separate out into word1, word2, etc.
 		String word1 = words[0];
@@ -130,13 +112,11 @@ public class TextAdventureGame {
 			case "quit": case "exit": case "leave":
 				String answer = YorN("Do you really want to quit the game? (Y/N): ");
 				if (answer.equals("Y")) {
-					System.out.print("Thanks for playing. Bye.");
-					System.exit(0);
+					return false;
 				}
 
 				if (answer.equals("N")) {
 					System.out.println("Let's return to the game!");
-					return true;
 				}
 
 			case "n": case "e": case "s": case "w": case "u": case "d":
@@ -158,13 +138,16 @@ public class TextAdventureGame {
 				break;
 
 			case "fix":
-				partCheck();
-				fixedShip = true;
+				fixShip();
 				break;
 
 			case "launch":
-				if (fixedShip && currentRoom.equals("forest1")) ending();
-				else if(currentRoom != "forest1") System.out.println("You need to be in the Forest Basecamp to take off!");
+				if (fixedShip && currentRoom.equals("forest1"))
+				{
+					ending();
+					return false;
+				}
+				else if (currentRoom != "forest1") System.out.println("You need to be in the Forest Basecamp to launch!");
 				else System.out.println("Your ship is still broken, you need to fix it!");
 				break;
 
@@ -181,38 +164,34 @@ public class TextAdventureGame {
 				break;
 
 			/**** two word commands ****/
+			case "move": case "go":
+				if (word2 != null) movingRooms(word2.charAt(0));
+				else System.out.println("Please specify direction");
+				break;
+
 			case "follow":
-				if (word2 != null)
-				{
-					following(word2);
-				}
-				else System.out.println("What do you want me to follow?");
+				follow(word2);
 				break;
 
 			case "swim":
-				if (word2 != null)
-				{
-					swimming(word2);
-				}
-				else System.out.println("Where do you want to swim?");
+				swim(word2);
 				break;
 
 			case "pickup":
-				pickupItem(word2);
+				if (itemCheck(word2)) pickupItem(word2);
 				break;
 
 			case "use":
-				useItem(word2);
+				if (itemCheck(word2))useItem(word2);
 				break;
 
 			case "takeoff": case "remove":
-				if (word2.equals("scuba")) roomList.get("lake").isBreatheable = false;
+				takeoff(word2);
 				break;
 
 			default:
 				System.out.println("Sorry, you can't do that.");
 		}
-		System.out.println();
 		return true;
 	}
 
@@ -227,6 +206,7 @@ public class TextAdventureGame {
 			System.out.println("-------------------------------------------");
 			System.out.print("Areas Travelled Today: [" + roomCounter % 8 + "/7] - What would you like to do? ");
 		}
+		roomChange = false;
 	}
 
 	static void movingRooms(char direction) {
@@ -258,17 +238,17 @@ public class TextAdventureGame {
 			else
 			{
 				currentRoom = roomList.get(currentRoom).getExit(direction);
+				roomList.get(currentRoom).isVisited = true;
 				System.out.println(roomList.get(currentRoom).displayName + "\n" + roomList.get(currentRoom).description);
 			}
 			roomChange = true;
 		}
 	}
 
-
-
 	static void pickupItem(String item) //Remind user if they've picked something up
 	{
-		if (roomList.get(currentRoom).items.size() > 0)
+		if (inventory.contains(item)) System.out.println("Item already in your inventory.");
+		else if (roomList.get(currentRoom).items.size() > 0)
 		{
 			for (int i = 0; i < roomList.get(currentRoom).items.size(); i++)
 			{
@@ -276,15 +256,15 @@ public class TextAdventureGame {
 				{
 					if (item.equals("leftwing"))
 					{
-						System.out.println("Yeah, that's in the sand, you're gonna need to dig it up with a shovel");
-						break;
+						System.out.println("Yeah, that's in the sand, you're gonna need to dig it up with a shovel.");
+						return;
 					}
 					else
 					{
 						inventory.add(item);
 						System.out.println("Item added to inventory!");
 						roomList.get(currentRoom).items.remove(item);
-						break;
+						return;
 					}
 				}
 			}
@@ -311,11 +291,19 @@ public class TextAdventureGame {
 		}
 	}
 
-	static void partCheck()
+	static void fixShip()
 	{
 		if (inventory.contains("leftwing") && inventory.contains("nose") && inventory.contains("engine") && inventory.contains("rightwing"))
 		{
-			if (currentRoom == "forest1") System.out.println("You have enough parts to fix the ship and the ship is fixed!");
+			if (currentRoom == "forest1")
+			{
+				fixedShip = true;
+				inventory.remove("leftwing");
+				inventory.remove("rightwing");
+				inventory.remove("nose");
+				inventory.remove("engine");
+				System.out.println("You have enough parts to fix the ship and the ship is fixed!");
+			}
 			else System.out.println("You need to be at your Forest Basecamp to fix your ship!");
 		}
 		else System.out.println("You don't have enough parts");
@@ -323,8 +311,8 @@ public class TextAdventureGame {
 
 	static void ending()
 	{
-		System.out.println("Congrats, you made it out alive, only to realize that you were dreaming.");
-		System.exit(0);
+		System.out.println("After testing your ship and making last inspections, you make sure nothing else is missing. You hop into your ship take off towards home to report findings of this planet and to refuel.");
+		System.out.println("Congratulations! You beat the game! you found " + secrets() + " out of 5 secrets.");
 	}
 
 	static void stats()
@@ -348,14 +336,13 @@ public class TextAdventureGame {
 					else System.out.println("There's nothing to mine through here.");
 				}
 
-				if (word.equals("scuba")) //Problem with using multiple times (using it when it's on)
+				if (word.equals("scuba"))
 				{
-					roomList.get("lake").isBreatheable = true;
-					if (currentRoom.equals("lake"))
-					{
-						System.out.println("Scuba Gear is now on, feel free to go into the cave on your east!");
-					}
+					roomList.get("cave1").isBreatheable = true;
+					if (itemList.get("scuba").isInUse) System.out.println("Scuba Gear is already in use.");
+					else if (currentRoom.equals("lake")) System.out.println("Scuba Gear is on, feel free to go into the cave on your east!");
 					else System.out.println("Scuba Gear is now on, but why now?");
+					itemList.get("scuba").isInUse = true;
 				}
 
 				if (word.equals("shovel"))
@@ -369,10 +356,11 @@ public class TextAdventureGame {
 					else System.out.println("There's nothing to dig up here");
 				}
 
-				if (word.equals("helmet")) //Problem with using multiple times (using it when it's on)
+				if (word.equals("helmet"))
 				{
-					System.out.println("Helmet light is turned on!");
-					helmetOn = true;
+					if (itemList.get("scuba").isInUse) System.out.println("Helmet and light is already in use.");
+					else System.out.println("Helmet and light is in use!");
+					itemList.get("scuba").isInUse = true;
 				}
 			}
 			else System.out.println("Item is not in your inventory");
@@ -380,25 +368,31 @@ public class TextAdventureGame {
 		else System.out.println("Item can not be used.");
 	}
 
-	static boolean itemCheck() //check if item exists
+	//Check if item exists
+	static boolean itemCheck(String item)
 	{
-		return true;
+		if (itemList.containsKey(item)) return true;
+		else System.out.println("Item does not exist."); return false;
 	}
 
 	static void dig()
 	{
-		if (currentRoom.equals("desert"))
+		if (inventory.contains("shovel"))
 		{
-			System.out.println("You dug out the left wing! It has been added to your inventory");
-			inventory.add("leftwing");
-			roomList.get(currentRoom).items.remove("leftwing");
+			if (currentRoom.equals("desert"))
+			{
+				System.out.println("You dug out the left wing! It has been added to your inventory");
+				inventory.add("leftwing");
+				roomList.get(currentRoom).items.remove("leftwing");
+			}
+			else System.out.println("There's nothing to dig up here");
 		}
-		else System.out.println("There's nothing to dig up here");
+		else System.out.println("You don't have a shovel");
 	}
 
 	static void look()
 	{
-		if (!roomList.get(currentRoom).isDark || helmetOn)
+		if (!roomList.get(currentRoom).isDark || itemList.get("helmet").isInUse)
 		{
 			System.out.println(roomList.get(currentRoom).directions);
 			System.out.println("There are " + roomList.get(currentRoom).items.size() + " items in the area");
@@ -414,9 +408,9 @@ public class TextAdventureGame {
 		else System.out.println("You can't see in here. You're gonna need some kind of light source.");
 	}
 
-	static void swimming(String word)
+	static void swim(String word)
 	{
-		if (currentRoom.equals("clearing"))
+		if (word != null && currentRoom.equals("clearing"))
 		{
 			if (word.charAt(0) =='d')
 			{
@@ -426,12 +420,12 @@ public class TextAdventureGame {
 		}
 		else if (currentRoom.equals("lake")) movingRooms(word.charAt(0));
 		else if (currentRoom.equals("cave1")) movingRooms(word.charAt(0));
-		else System.out.println("There's nowhere to swim here!");
+		else System.out.println("There's nowhere to swim here.");
 	}
 
-	static void following(String word)
+	static void follow(String word)
 	{
-		if (word.equals("river"))
+		if (word != null && word.equals("river"))
 		{
 			if (currentRoom.equals("forest2")) movingRooms('w');
 			else if (currentRoom.equals("beach")) movingRooms('e');
@@ -440,6 +434,55 @@ public class TextAdventureGame {
 		else System.out.println("You can't follow that.");
 	}
 
+	static void takeoff(String item)
+	{
+		if (item != null && (item.equals("scuba") || item.equals("helmet")))
+		{
+			if (itemList.get(item).isInUse)
+			{
+				itemList.get(item).isInUse = false;
+				System.out.println(itemList.get(item).itemDisplayName + " is now taken off.");
+			}
+			else System.out.println("You don't have that on. You can't take off something you don't have on.");
+			if (item.equals("scuba")) roomList.get("cave1").isBreatheable = false;
+		}
+		else System.out.println("You can't take that off");
+	}
+
+	static int secrets()
+	{
+		String [] rooms = {"secret", "peak", "trees", "goldmine", "cave1"};
+		for (int i = 0; i < rooms.length; i++)
+		{
+			if (roomList.get(rooms[i]).isVisited)
+			{
+				secretsFound++;
+			}
+		}
+		return secretsFound;
+	}
+
 	static void help()
-	{}
+	{
+		System.out.println("Help:\n"
+		+ "Exit - to leave the game\n"
+		+ "Move/Go (N, E, S, W, U, D) - to move in a certain direction\n"
+		+ "Look - to look around\n"
+		+ "Jump - to jump\n"
+		+ "Inventory - to get inventory\n"
+		+ "Fix - to fix your ship and get it ready for launch\n"
+		+ "Launch - to launch off of the planet and beat the game\n"
+		+ "Stats - to see how many more rooms you can travel to\n"
+		+ "Dig - to dig\n"
+		+ "Follow (something) - to follow something\n"
+		+ "Swim (N, E, S, W, U, D) - to swim in a certain direction\n"
+		+ "Pickup (item) - to pickup an item\n"
+		+ "Use (item) - to use an item\n"
+		+ "Take Off/Remove (item) - to take off an item");
+	}
+
+	static void exit()
+	{
+		System.out.println("Thank you for playing! Good bye :)");
+	}
 }
