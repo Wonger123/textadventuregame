@@ -149,7 +149,7 @@ public class TextAdventureGame {
 				break;
 
 			case "jump":
-				if (currentRoom.equals("peak")) System.out.println("Suicide is a real issue, please call: 1-833-456-4566. You still need to make it home first");
+				if (currentRoom.equals("peak")) System.out.println("Suicide is a real issue, please call: 1-833-456-4566. You still need to make it home first.");
 				else System.out.println("Have fun!");
 				break;
 
@@ -276,7 +276,7 @@ public class TextAdventureGame {
 				{
 					if (item.equals("leftwing"))
 					{
-						System.out.println("Yeah, that's in the sand, you're gonna need to dig it up with a shovel");
+						System.out.println("Yeah, that's in the sand, you're gonna need to dig it up with a shovel.");
 						break;
 					}
 					else
@@ -288,11 +288,11 @@ public class TextAdventureGame {
 					}
 				}
 			}
-			System.out.println("Item is not in this room");
+			System.out.println("Item is not in this room.");
 		}
 		else
 		{
-			System.out.println("Nothing to pickup here");
+			System.out.println("Nothing to pickup here.");
 		}
 	}
 
