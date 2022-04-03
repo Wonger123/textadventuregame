@@ -82,14 +82,14 @@ class Room {
 
 		r = new Room("Upper Mine",
 				"At the top of the mine there is a minecart on a track.",
-				"Looking south there is a path back to the forest.\n"
+				"Looking west there is a path back to the forest.\n"
 				+ "Further down the mine, you see a miners hat sitting on the floor, lighting up the room.",
 				false, true, true);
 		r.setExits("", "", "", "forest2", "", "lmine");
 		roomList.put("umine", r);
 
 		r = new Room("Lower Mine",
-				"You see a hat on the ground with a light on it lighting up the east wall, against that wall you see the ship engine. On the east wall you see an image depicting a sun shining down onto a field of crops.",
+				"You see a helmet on the ground with a light on it lighting up the east wall, against that wall you see the ship engine. On the east wall you see an image depicting a sun shining down onto a field of crops.",
 				"Looking east there seems to be wall blocking a room.\n"
 				+ "You can also go back up the mine.",
 				false, true, true);

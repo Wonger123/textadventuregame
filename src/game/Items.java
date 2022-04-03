@@ -28,7 +28,7 @@ class Items {
 		 itemList.put("pickaxe", i);
 		 roomList.get("mountains").items.add("pickaxe");
 
-		 i = new Items("Miner Helmet", "A hard hat with a light on it.", true, "helmet");
+		 i = new Items("Miner Helmet", "A hard helmet with a light on it.", true, "helmet");
 		 itemList.put("helmet", i);
 		 roomList.get("lmine").items.add("helmet");
 
