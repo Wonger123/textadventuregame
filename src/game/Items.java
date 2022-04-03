@@ -38,7 +38,7 @@ class Items {
 		 itemList.put("scuba", i);
 		 roomList.get("beach").items.add("scuba");
 
-		 i = new Items("Rocket Left Wing", "The left wing of the rocket.", false, false, "leftwing");
+		 i = new Items("Rocket Left Wing", "The left wing of the rocket. It's burried in the sand.", false, false, "leftwing");
 		 itemList.put("leftwing", i);
 		 roomList.get("desert").items.add("leftwing");
 

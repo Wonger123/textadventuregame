@@ -15,6 +15,7 @@ public class TextAdventureGame {
 	static int roomCounter;
 	static boolean roomChange = true;
 	static boolean fixedShip = false;
+	static int secretsFound;
 	static ArrayList <String> inventory = new ArrayList <String>();
 
 	public static void main(String[] args) {
@@ -93,6 +94,7 @@ public class TextAdventureGame {
 		text = text.replaceAll("statistics", "stats");
 		text = text.replaceAll("take off", "takeoff");
 		text = text.replaceAll(" the ", " ");
+		text = text.replaceAll(" axe", " pickaxe");
 
 		String words[] = text.split(" ");
 
@@ -145,7 +147,7 @@ public class TextAdventureGame {
 					ending();
 					return false;
 				}
-				else if (currentRoom != "forest1") System.out.println("You need to be in the Forest Basecamp to take off!");
+				else if (currentRoom != "forest1") System.out.println("You need to be in the Forest Basecamp to launch!");
 				else System.out.println("Your ship is still broken, you need to fix it!");
 				break;
 
@@ -184,11 +186,7 @@ public class TextAdventureGame {
 				break;
 
 			case "takeoff": case "remove":
-				if (word2 != null && word2.equals("scuba"))
-				{
-					roomList.get("cave1").isBreatheable = false;
-					itemList.get("scuba").isInUse = false;
-				}
+				takeoff(word2);
 				break;
 
 			default:
@@ -240,6 +238,7 @@ public class TextAdventureGame {
 			else
 			{
 				currentRoom = roomList.get(currentRoom).getExit(direction);
+				roomList.get(currentRoom).isVisited = true;
 				System.out.println(roomList.get(currentRoom).displayName + "\n" + roomList.get(currentRoom).description);
 			}
 			roomChange = true;
@@ -248,7 +247,8 @@ public class TextAdventureGame {
 
 	static void pickupItem(String item) //Remind user if they've picked something up
 	{
-		if (roomList.get(currentRoom).items.size() > 0)
+		if (inventory.contains(item)) System.out.println("Item already in your inventory.");
+		else if (roomList.get(currentRoom).items.size() > 0)
 		{
 			for (int i = 0; i < roomList.get(currentRoom).items.size(); i++)
 			{
@@ -256,7 +256,7 @@ public class TextAdventureGame {
 				{
 					if (item.equals("leftwing"))
 					{
-						System.out.println("Yeah, that's in the sand, you're gonna need to dig it up with a shovel");
+						System.out.println("Yeah, that's in the sand, you're gonna need to dig it up with a shovel.");
 						return;
 					}
 					else
@@ -297,8 +297,12 @@ public class TextAdventureGame {
 		{
 			if (currentRoom == "forest1")
 			{
-				System.out.println("You have enough parts to fix the ship and the ship is fixed!");
 				fixedShip = true;
+				inventory.remove("leftwing");
+				inventory.remove("rightwing");
+				inventory.remove("nose");
+				inventory.remove("engine");
+				System.out.println("You have enough parts to fix the ship and the ship is fixed!");
 			}
 			else System.out.println("You need to be at your Forest Basecamp to fix your ship!");
 		}
@@ -307,7 +311,8 @@ public class TextAdventureGame {
 
 	static void ending()
 	{
-		System.out.println("Congrats, you made it out alive, only to realize that you were dreaming.");
+		System.out.println("After testing your ship and making last inspections, you make sure nothing else is missing. You hop into your ship take off towards home to report findings of this planet and to refuel.");
+		System.out.println("Congratulations! You beat the game! you found " + secrets() + " out of 5 secrets.");
 	}
 
 	static void stats()
@@ -427,6 +432,34 @@ public class TextAdventureGame {
 			else System.out.println("There's no river here");
 		}
 		else System.out.println("You can't follow that.");
+	}
+
+	static void takeoff(String item)
+	{
+		if (item != null && (item.equals("scuba") || item.equals("helmet")))
+		{
+			if (itemList.get(item).isInUse)
+			{
+				itemList.get(item).isInUse = false;
+				System.out.println(itemList.get(item).itemDisplayName + " is now taken off.");
+			}
+			else System.out.println("You don't have that on. You can't take off something you don't have on.");
+			if (item.equals("scuba")) roomList.get("cave1").isBreatheable = false;
+		}
+		else System.out.println("You can't take that off");
+	}
+
+	static int secrets()
+	{
+		String [] rooms = {"secret", "peak", "trees", "goldmine", "cave1"};
+		for (int i = 0; i < rooms.length; i++)
+		{
+			if (roomList.get(rooms[i]).isVisited)
+			{
+				secretsFound++;
+			}
+		}
+		return secretsFound;
 	}
 
 	static void help()
