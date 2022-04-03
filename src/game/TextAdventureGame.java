@@ -15,7 +15,6 @@ public class TextAdventureGame {
 	static int roomCounter;
 	static boolean roomChange = true;
 	static boolean fixedShip = false;
-	static boolean helmetOn = false;
 	static ArrayList <String> inventory = new ArrayList <String>();
 
 	public static void main(String[] args) {
@@ -166,19 +165,11 @@ public class TextAdventureGame {
 
 			/**** two word commands ****/
 			case "follow":
-				if (word2 != null)
-				{
-					following(word2);
-				}
-				else System.out.println("What do you want me to follow?");
+				follow(word2);
 				break;
 
 			case "swim":
-				if (word2 != null)
-				{
-					swimming(word2);
-				}
-				else System.out.println("Where do you want to swim?");
+				swim(word2);
 				break;
 
 			case "pickup":
@@ -190,7 +181,11 @@ public class TextAdventureGame {
 				break;
 
 			case "takeoff": case "remove":
-				if (word2.equals("scuba")) roomList.get("lake").isBreatheable = false;
+				if (word2 != null && word2.equals("scuba"))
+				{
+					roomList.get("cave1").isBreatheable = false;
+					itemList.get("scuba").isInUse = false;
+				}
 				break;
 
 			default:
@@ -333,14 +328,13 @@ public class TextAdventureGame {
 					else System.out.println("There's nothing to mine through here.");
 				}
 
-				if (word.equals("scuba")) //Problem with using multiple times (using it when it's on)
+				if (word.equals("scuba"))
 				{
-					roomList.get("lake").isBreatheable = true;
-					if (currentRoom.equals("lake"))
-					{
-						System.out.println("Scuba Gear is now on, feel free to go into the cave on your east!");
-					}
+					roomList.get("cave1").isBreatheable = true;
+					if (itemList.get("scuba").isInUse) System.out.println("Scuba Gear is already in use.");
+					else if (currentRoom.equals("lake")) System.out.println("Scuba Gear is on, feel free to go into the cave on your east!");
 					else System.out.println("Scuba Gear is now on, but why now?");
+					itemList.get("scuba").isInUse = true;
 				}
 
 				if (word.equals("shovel"))
@@ -354,10 +348,11 @@ public class TextAdventureGame {
 					else System.out.println("There's nothing to dig up here");
 				}
 
-				if (word.equals("helmet")) //Problem with using multiple times (using it when it's on)
+				if (word.equals("helmet"))
 				{
-					System.out.println("Helmet light is turned on!");
-					helmetOn = true;
+					if (itemList.get("scuba").isInUse) System.out.println("Helmet and light is already in use.");
+					else System.out.println("Helmet and light is in use!");
+					itemList.get("scuba").isInUse = true;
 				}
 			}
 			else System.out.println("Item is not in your inventory");
@@ -365,7 +360,8 @@ public class TextAdventureGame {
 		else System.out.println("Item can not be used.");
 	}
 
-	static boolean itemCheck(String item) //check if item exists
+	//Check if item exists
+	static boolean itemCheck(String item)
 	{
 		if (itemList.containsKey(item)) return true;
 		else System.out.println("Item does not exist."); return false;
@@ -388,7 +384,7 @@ public class TextAdventureGame {
 
 	static void look()
 	{
-		if (!roomList.get(currentRoom).isDark || helmetOn)
+		if (!roomList.get(currentRoom).isDark || itemList.get("helmet").isInUse)
 		{
 			System.out.println(roomList.get(currentRoom).directions);
 			System.out.println("There are " + roomList.get(currentRoom).items.size() + " items in the area");
@@ -404,9 +400,9 @@ public class TextAdventureGame {
 		else System.out.println("You can't see in here. You're gonna need some kind of light source.");
 	}
 
-	static void swimming(String word)
+	static void swim(String word)
 	{
-		if (currentRoom.equals("clearing"))
+		if (word != null && currentRoom.equals("clearing"))
 		{
 			if (word.charAt(0) =='d')
 			{
@@ -416,12 +412,12 @@ public class TextAdventureGame {
 		}
 		else if (currentRoom.equals("lake")) movingRooms(word.charAt(0));
 		else if (currentRoom.equals("cave1")) movingRooms(word.charAt(0));
-		else System.out.println("There's nowhere to swim here!");
+		else System.out.println("There's nowhere to swim here.");
 	}
 
-	static void following(String word)
+	static void follow(String word)
 	{
-		if (word.equals("river"))
+		if (word != null && word.equals("river"))
 		{
 			if (currentRoom.equals("forest2")) movingRooms('w');
 			else if (currentRoom.equals("beach")) movingRooms('e');

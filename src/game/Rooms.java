@@ -115,7 +115,7 @@ class Room {
 				"The forest has a clearing here, a lake below is surrounded by trees.",
 				"Looking north you can reach a beach.\n"
 				+ "Looking east you can enter the forest, back to the clearing where your ship resides.\n"
-				+ "Looking south the forest becomes less dense, before disappearing as you enter a rocky landscape, where you find mountains.\n"
+				+ "Looking south the forest becomes less dense, before disappearing as you enter a rocky landscape, where you find mountains. This will be a one way path.\n"
 				+ "There is a lake that you cannot see to the bottom of down below. The sun reflecting off of it is too bright.",
 				false, true, true);
 		r.setExits("beach", "forest1", "mountains", "", "", "lake");
