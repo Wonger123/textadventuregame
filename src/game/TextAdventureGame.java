@@ -252,7 +252,7 @@ public class TextAdventureGame {
 			}
 			if (roomCounter != 0 && roomCounter % 8 == 0)
 			{
-				System.out.println("It's getting dark and cold out, you can't travel to another room. You walk back to your Forest Base Camp.");
+				System.out.println("It's getting dark and cold out, you can't travel to another area. You walk back to your Forest Base Camp.");
 				currentRoom = "forest1";
 			}
 			else
