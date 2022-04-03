@@ -47,7 +47,7 @@ public class TextAdventureGame {
 			System.out.println("Game Commencing...");
 
 			System.out.println();
-			System.out.println("You awake in a forest, the last thing that you remember was flying towards Mars when you crashed into a rock and went off course.\nNow, lying in pieces near you, your ship is unusable. You notice some parts are missing as well. You think you should probably go find them instead of laying here until you die.");
+			System.out.println("You awake in a forest, the last thing that you remember was flying towards Mars when you crashed into a rock and went off course.\nNow, lying in pieces near you, your ship is unusable. You notice some parts are missing as well.\nYou think you should probably go find them instead of laying here until you die.");
 		}
 		if (input.equals("N")) {
 			System.out.print("Have a good day :)");
