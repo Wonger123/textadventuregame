@@ -11,22 +11,23 @@ public class TextAdventureGame {
 	static HashMap<String, Room> roomList = new HashMap<String, Room>();
 	static HashMap<String, Items> itemList = new HashMap<String, Items>();
 	static String currentRoom;
+
 	static String description = "";
 	static int roomCounter;
-	static boolean roomChange = false;
+	static boolean roomChange = true;
 	static boolean fixedShip = false;
-	static ArrayList <Items> inventory = new ArrayList <Items>(); //Change to <String> and see if you can figure this out...
+	static boolean helmetOn = false;
+	static ArrayList <String> inventory = new ArrayList <String>();
 
 	public static void main(String[] args) {
 		boolean playing = true;
 		String command;
 		setup();
 		while (playing) {
-			System.out.print(commandPrompt());
+			commandPrompt();
 			roomChange = false;
 			command = getCommand();
 			playing = parseCommand(command);
-			playing = death();
 		}
 	}
 
@@ -44,6 +45,7 @@ public class TextAdventureGame {
 		String input = YorN("Would you like to play? (Y/N): ");
 		if (input.equals("Y")) {
 			System.out.println("Game Commencing...");
+
 			System.out.println();
 			System.out.println("You awake in a forest, the last thing that you remember was flying towards Mars when you crashed into a rock and went off course.\nNow, lying in pieces near you, your ship is unusable. You notice some parts are missing as well. You think you should probably go find them instead of laying here until you die.");
 		}
@@ -100,6 +102,8 @@ public class TextAdventureGame {
 		text = text.replaceAll("left wing", "leftwing");
 		text = text.replaceAll("rocket ", "");
 		text = text.replaceAll("right wing", "rightwing");
+		text = text.replaceAll("statistics", "stats");
+		text = text.replaceAll("take off", "takeoff");
 
 		String words[] = text.split(" ");
 
@@ -141,9 +145,7 @@ public class TextAdventureGame {
 				break;
 
 			case "look":
-				System.out.println(roomList.get(currentRoom).directions);
-				System.out.println("There are " + roomList.get(currentRoom).items.size() + " items in the area");
-				getItems();
+				look();
 				break;
 
 			case "jump":
@@ -151,21 +153,31 @@ public class TextAdventureGame {
 				else System.out.println("Have fun!");
 				break;
 
-			
-			case "i": case "inventory":
+			case "inventory":
 				getInventory();
 				break;
-			case "break": case "mine":
-				break;
-			case "use":
+
 			case "fix":
 				partCheck();
 				fixedShip = true;
 				break;
-			case "takeoff":
-				if (fixedShip && currentRoom == "forest1") ending();
+
+			case "launch":
+				if (fixedShip && currentRoom.equals("forest1")) ending();
 				else if(currentRoom != "forest1") System.out.println("You need to be in the Forest Basecamp to take off!");
 				else System.out.println("Your ship is still broken, you need to fix it!");
+				break;
+
+			case "stats":
+				stats();
+				break;
+
+			case "dig":
+				dig();
+				break;
+
+			case "help":
+				help();
 				break;
 
 			/**** two word commands ****/
@@ -189,6 +201,14 @@ public class TextAdventureGame {
 				pickupItem(word2);
 				break;
 
+			case "use":
+				useItem(word2);
+				break;
+
+			case "takeoff": case "remove":
+				if (word2.equals("scuba")) roomList.get("lake").isBreatheable = false;
+				break;
+
 			default:
 				System.out.println("Sorry, you can't do that.");
 		}
@@ -196,54 +216,202 @@ public class TextAdventureGame {
 		return true;
 	}
 
+	static void commandPrompt() {
+		if (roomCounter % 8 == 0 && roomChange == true) {
+			System.out.println("Rise and Shine! It's Day " + (roomCounter / 8 + 1) + "!");
+			if (roomCounter == 0) System.out.println(roomList.get(currentRoom).displayName + "\n" + roomList.get(currentRoom).description);
+			System.out.println("-------------------------------------------");
+			System.out.print("Areas Travelled Today: [0/7] - What would you like to start off with today? ");
+		}
+		else {
+			System.out.println("-------------------------------------------");
+			System.out.print("Areas Travelled Today: [" + roomCounter % 8 + "/7] - What would you like to do? ");
+		}
+	}
+
 	static void movingRooms(char direction) {
 		if (roomList.get(currentRoom).getExit(direction) == "") {
 			System.out.println("You cannot go there!");
-		} else {
-			currentRoom = roomList.get(currentRoom).getExit(direction);
-			roomCounter++;
-			roomChange = true;
 		}
-		System.out.println(roomList.get(currentRoom).displayName + "\n" + roomList.get(currentRoom).description);
-	}
-
-	static boolean death() {
-		if (roomCounter == 52) {
-			System.out.println("You've ran out of food this morning. You collapse to the ground and die");
-			return false;
-		} else
-			return true;
-	}
-
-	static String commandPrompt() {
-		String prompt;
-		if (roomCounter == 0 && roomChange == true) {
-			prompt = "Rise and Shine! It's Day " + (roomCounter / 7 + 1)
-					+ "!\nWhat would you like to start off with today? ";
-		} else if (roomCounter % 7 == 0 && roomChange == true) {
-			currentRoom = "forest1";
-			prompt = "It's getting dark and cold out, you start to walk back to the Forest where your base camp is.\nRise and Shine! It's Day "
-					+ (roomCounter / 7 + 1) + "!\nWhat would you like to start off with today? ";
-		} else {
-			prompt = "What would you like to do? ";
-		}
-		return prompt;
-	}
-
-	static void getItems()
-	{
-		if (roomList.get(currentRoom).items.size() == 0)
+		else if(!roomList.get(roomList.get(currentRoom).getExit(direction)).isAccessible)
 		{
-			return;
+			System.out.println("You can't access here, yet... Try breaking the wall down with your pickaxe.");
+		}
+		else if(!roomList.get(roomList.get(currentRoom).getExit(direction)).isBreatheable)
+		{
+			System.out.println("BAD IDEA! You run out of oxygen and die...");
+			System.exit(0);
 		}
 		else
 		{
+			roomCounter++;
+			if (roomCounter == 61)
+			{
+				System.out.println("You've ran out of food this morning. You collapse to the ground and die.");
+				System.exit(0);
+			}
+			if (roomCounter != 0 && roomCounter % 8 == 0)
+			{
+				System.out.println("It's getting dark and cold out, you can't travel to another room. You walk back to your Forest Base Camp.");
+				currentRoom = "forest1";
+			}
+			else
+			{
+				currentRoom = roomList.get(currentRoom).getExit(direction);
+				System.out.println(roomList.get(currentRoom).displayName + "\n" + roomList.get(currentRoom).description);
+			}
+			roomChange = true;
+		}
+	}
+
+
+
+	static void pickupItem(String item) //Remind user if they've picked something up
+	{
+		if (roomList.get(currentRoom).items.size() > 0)
+		{
 			for (int i = 0; i < roomList.get(currentRoom).items.size(); i++)
 			{
-				System.out.println(itemList.get(roomList.get(currentRoom).items.get(i)).itemDisplayName);
-				System.out.println(itemList.get(roomList.get(currentRoom).items.get(i)).itemDescription);
+				if (itemList.get(roomList.get(currentRoom).items.get(i)).itemName.equals(item))
+				{
+					if (item.equals("leftwing"))
+					{
+						System.out.println("Yeah, that's in the sand, you're gonna need to dig it up with a shovel");
+						break;
+					}
+					else
+					{
+						inventory.add(item);
+						System.out.println("Item added to inventory!");
+						roomList.get(currentRoom).items.remove(item);
+						break;
+					}
+				}
+			}
+			System.out.println("Item is not in this room");
+		}
+		else
+		{
+			System.out.println("Nothing to pickup here");
+		}
+	}
+
+	static void getInventory()
+	{
+		String list = "Inventory: ";
+		if (inventory.size() == 0) System.out.println("Nothing in inventory");
+		else if (inventory.size() == 1) System.out.println("Inventory: " + itemList.get(inventory.get(0)).itemDisplayName);
+		else
+		{
+			for (int i = 0; i < inventory.size(); i++)
+			{
+				list += "|" + itemList.get(inventory.get(i)).itemDisplayName + "| ";
+			}
+			System.out.println(list);
+		}
+	}
+
+	static void partCheck()
+	{
+		if (inventory.contains("leftwing") && inventory.contains("nose") && inventory.contains("engine") && inventory.contains("rightwing"))
+		{
+			if (currentRoom == "forest1") System.out.println("You have enough parts to fix the ship and the ship is fixed!");
+			else System.out.println("You need to be at your Forest Basecamp to fix your ship!");
+		}
+		else System.out.println("You don't have enough parts");
+	}
+
+	static void ending()
+	{
+		System.out.println("Congrats, you made it out alive, only to realize that you were dreaming.");
+		System.exit(0);
+	}
+
+	static void stats()
+	{
+		System.out.println("You have " + (61-roomCounter) + " moves left");
+	}
+
+	static void useItem(String word)
+	{
+		if (itemList.get(word).isActivatable)
+		{
+			if (inventory.contains(word))
+			{
+				if (word.equals("pickaxe"))
+				{
+					if (currentRoom.equals("lmine"))
+					{
+						roomList.get("goldmine").isAccessible = true;
+						System.out.println("Wall is now broken.");
+					}
+					else System.out.println("There's nothing to mine through here.");
+				}
+
+				if (word.equals("scuba")) //Problem with using multiple times (using it when it's on)
+				{
+					roomList.get("lake").isBreatheable = true;
+					if (currentRoom.equals("lake"))
+					{
+						System.out.println("Scuba Gear is now on, feel free to go into the cave on your east!");
+					}
+					else System.out.println("Scuba Gear is now on, but why now?");
+				}
+
+				if (word.equals("shovel"))
+				{
+					if (currentRoom.equals("desert"))
+					{
+						System.out.println("You dug out the left wing! It has been added to your inventory");
+						inventory.add("leftwing");
+						roomList.get(currentRoom).items.remove("leftwing");
+					}
+					else System.out.println("There's nothing to dig up here");
+				}
+
+				if (word.equals("helmet")) //Problem with using multiple times (using it when it's on)
+				{
+					System.out.println("Helmet light is turned on!");
+					helmetOn = true;
+				}
+			}
+			else System.out.println("Item is not in your inventory");
+		}
+		else System.out.println("Item can not be used.");
+	}
+
+	static boolean itemCheck() //check if item exists
+	{
+		return true;
+	}
+
+	static void dig()
+	{
+		if (currentRoom.equals("desert"))
+		{
+			System.out.println("You dug out the left wing! It has been added to your inventory");
+			inventory.add("leftwing");
+			roomList.get(currentRoom).items.remove("leftwing");
+		}
+		else System.out.println("There's nothing to dig up here");
+	}
+
+	static void look()
+	{
+		if (!roomList.get(currentRoom).isDark || helmetOn)
+		{
+			System.out.println(roomList.get(currentRoom).directions);
+			System.out.println("There are " + roomList.get(currentRoom).items.size() + " items in the area");
+			if (roomList.get(currentRoom).items.size() != 0)
+			{
+				for (int i = 0; i < roomList.get(currentRoom).items.size(); i++)
+				{
+					System.out.println(itemList.get(roomList.get(currentRoom).items.get(i)).itemDisplayName);
+					System.out.println(itemList.get(roomList.get(currentRoom).items.get(i)).itemDescription);
+				}
 			}
 		}
+		else System.out.println("You can't see in here. You're gonna need some kind of light source.");
 	}
 
 	static void swimming(String word)
@@ -272,56 +440,6 @@ public class TextAdventureGame {
 		else System.out.println("You can't follow that.");
 	}
 
-	static void pickupItem(String item) //Remind user if they've picked something up
-	{
-		if (roomList.get(currentRoom).items.size() > 0)
-		{
-			for (int i = 0; i < roomList.get(currentRoom).items.size(); i++)
-			{
-				if (itemList.get(roomList.get(currentRoom).items.get(i)).itemName.equals(item))
-				{
-					inventory.add(itemList.get(item));
-					System.out.println("Item added to inventory!");
-					roomList.get(currentRoom).items.remove(item);
-					return;
-				}
-			}
-			System.out.println("Item is not in this room");
-		}
-		else
-		{
-			System.out.println("Nothing to pickup here");
-		}
-	}
-
-	static void getInventory()
-	{
-		String list = "Inventory: ";
-		if (inventory.size() == 0) System.out.println("Nothing in inventory");
-		else if (inventory.size() == 1) System.out.println("Inventory: " + inventory.get(0).itemDisplayName);
-		else
-		{
-			for (int i = 0; i < inventory.size(); i++)
-			{
-				list += "|" + inventory.get(i).itemDisplayName + "| ";
-			}
-			System.out.println(list);
-		}
-	}
-
-	static void partCheck()
-	{
-		if (inventory.contains(itemList.get("leftwing")) && inventory.contains(itemList.get("nose")) && inventory.contains(itemList.get("engine")) && inventory.contains(itemList.get("rightwing")))
-		{
-			if (currentRoom == "forest1") System.out.println("You have enough parts to fix the ship and the ship is fixed!");
-			else System.out.println("You need to be at your Forest Basecamp to fix your ship!");
-		}
-		else System.out.println("You don't have enough parts");
-	}
-
-	static void ending()
-	{
-		System.out.println("Congrats, you made it out alive, only to realize that you were dreaming.");
-		System.exit(0);
-	}
+	static void help()
+	{}
 }
