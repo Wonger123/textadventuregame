@@ -85,8 +85,6 @@ public class TextAdventureGame {
 		text = text.replaceAll("pick up", "pickup");
 		text = text.replaceAll("look around", "look");
 		text = text.replaceAll("climb up", "up");
-		text = text.replaceAll("go ", "");
-		text = text.replaceAll("move ", "");
 		text = text.replaceAll("miner helment", "helmet");
 		text = text.replaceAll("scuba gear", "scuba");
 		text = text.replaceAll("left wing", "leftwing");
@@ -164,6 +162,11 @@ public class TextAdventureGame {
 				break;
 
 			/**** two word commands ****/
+			case "move": case "go":
+				if (word2 != null) movingRooms(word2.charAt(0));
+				else System.out.println("Please specify direction");
+				break;
+
 			case "follow":
 				follow(word2);
 				break;
@@ -427,7 +430,23 @@ public class TextAdventureGame {
 	}
 
 	static void help()
-	{}
+	{
+		System.out.println("Help:\n"
+		+ "Exit - to leave the game\n"
+		+ "Move/Go (N, E, S, W, U, D) - to move in a certain direction\n"
+		+ "Look - to look around\n"
+		+ "Jump - to jump\n"
+		+ "Inventory - to get inventory\n"
+		+ "Fix - to fix your ship and get it ready for launch\n"
+		+ "Launch - to launch off of the planet and beat the game\n"
+		+ "Stats - to see how many more rooms you can travel to\n"
+		+ "Dig - to dig\n"
+		+ "Follow (something) - to follow something\n"
+		+ "Swim (N, E, S, W, U, D) - to swim in a certain direction\n"
+		+ "Pickup (item) - to pickup an item\n"
+		+ "Use (item) - to use an item\n"
+		+ "Take Off/Remove (item) - to take off an item");
+	}
 
 	static void exit()
 	{
